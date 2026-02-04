@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/* Define base variables that change with dark mode */
+:root {
+	/* Light-mode palette based on #17ACB3 */
+	--acme-primary-100: #e6fbfb;
+	--acme-primary-200: #bfeff0;
+	--acme-primary-300: #99e3e6;
+	--acme-primary-400: #4fd0d3;
+	--acme-primary-500: #17ACB3;
+	--acme-primary-600: #1397a0;
+	--acme-primary-700: #0f7e86;
+	--acme-primary-800: #0b656c;
+	--acme-primary-900: #074b52;
+}
+
+.dark {
+	/* Dark-mode palette based on #193684 */
+	--acme-primary-100: #e8eaf6;
+	--acme-primary-200: #cfd5ee;
+	--acme-primary-300: #b7bfe7;
+	--acme-primary-400: #7f80da;
+	--acme-primary-500: #193684;
+	--acme-primary-600: #162d70;
+	--acme-primary-700: #12245a;
+	--acme-primary-800: #0e1b44;
+	--acme-primary-900: #0a132d;
+}
+
+/* Register colors in Tailwind's theme using @theme inline */
+@theme inline {
+	--color-primary-100: var(--acme-primary-100);
+	--color-primary-200: var(--acme-primary-200);
+	--color-primary-300: var(--acme-primary-300);
+	--color-primary-400: var(--acme-primary-400);
+	--color-primary-500: var(--acme-primary-500);
+	--color-primary-600: var(--acme-primary-600);
+	--color-primary-700: var(--acme-primary-700);
+	--color-primary-800: var(--acme-primary-800);
+	--color-primary-900: var(--acme-primary-900);
+}
+
+html, body, #root {
+	height: 100%;
+}
+
+body {
+	transition: background-color .2s ease, color .2s ease;
+}

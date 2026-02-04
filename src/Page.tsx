@@ -1,16 +1,33 @@
+import Contacto from "./pages/Contacto";
+import Equipo from "./pages/Equipo";
+import Error from "./pages/Error";
+import Gallery from "./pages/Gallery";
+import Historia from "./pages/Historia";
+import Index from "./pages/Index";
 
-const Page = ({ slug }: { slug: string }) => {
-return <div><h1>Página: {slug}</h1></div>;
-  // Aquí puedes hacer fetch de los datos de la página por slug
-  // Y renderizar componentes diferentes según el slug
-//   if (slug === "inicio") {
-//     return <HomeComponent />;
-//   }
-//   if (slug === "contacto") {
-//     return <ContactComponent />;
-//   }
-//   // ...otros casos
-//   return <DefaultPageComponent slug={slug} />;
+const Page = ({ slug, loading }: { slug: string, loading: boolean }) => {
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (slug === "inicio") {
+    return <Index />;
+  }
+  if (slug === "contacto") {
+    return <Contacto />;
+  }
+  if( slug === "historia"){
+    return <Historia />;
+  }
+  if( slug === "galeria"){
+    return <Gallery />;
+  }
+  if( slug === "nuestro-equipo"){
+    return <Equipo />;
+  }
+  // ...otros casos
+  return <Error />;
 };
 
 export default Page;

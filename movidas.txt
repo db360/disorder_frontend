@@ -1,0 +1,17 @@
+PALETA DE COLORES
+
+#17ACB3
+#193684
+
+#C03E27
+#EF5857
+#8E5DAE
+#FDD816
+
+
+-Logo solo letras para el navBar para que ocupe menos alto
+-Logo para el Favicom - Gotitas de sangre 
+-Fotos del Studio
+-Fotos de los trabajos de Alexis y Andy
+
+
