@@ -1,4 +1,75 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
+
+const MEDIA_FIELDS = gql`
+  fragment MediaFields on MediaItem {
+    sourceUrl
+    mediaItemUrl
+    altText
+    mediaDetails {
+      width
+      height
+      sizes {
+        name
+        sourceUrl
+        width
+        height
+      }
+    }
+  }
+`;
+
+const PAGE_LIST_FIELDS = gql`
+  fragment PageListFields on Page {
+    id
+    title
+    slug
+    uri
+    isFrontPage
+    isPostsPage
+  }
+`;
+
+const PAGE_FULL_FIELDS = gql`
+  fragment PageFullFields on Page {
+    id
+    title
+    content
+    slug
+    seo {
+      title
+      metaDesc
+      opengraphTitle
+      opengraphDescription
+      opengraphImage {
+        sourceUrl
+      }
+      canonical
+    }
+    featuredImage {
+      node {
+        ...MediaFields
+      }
+    }
+  }
+  ${MEDIA_FIELDS}
+`;
+
+const GALERIA_FIELDS = gql`
+  fragment GaleriaFields on Galeria {
+    id
+    title
+    slug
+    galeriaMostrarEnFrontend
+    seo {
+      title
+      metaDesc
+    }
+    galeriaImagenes {
+      ...MediaFields
+    }
+  }
+  ${MEDIA_FIELDS}
+`;
 
 // Query para obtener todas las páginas públicas
 export const GET_ALL_PAGE_SLUGS = gql`
@@ -9,6 +80,7 @@ export const GET_ALL_PAGE_SLUGS = gql`
         uri
         title
         id
+        menuOrder
       }
     }
   }
@@ -20,34 +92,20 @@ export const GET_ALL_PAGES = gql`
   query GetAllPages {
     pages {
       nodes {
-        id
-        title
-        slug
-        excerpt
-        content
-        uri
-        isFrontPage
-        isPostsPage
+        ...PageListFields
       }
     }
   }
+  ${PAGE_LIST_FIELDS}
 `;
 // Obtener página por slug
 export const GET_PAGE_BY_SLUG = gql`
   query GetPageBySlug($slug: ID!) {
     page(id: $slug, idType: URI) {
-      id
-      title
-      content
-      slug
-      featuredImage {
-        node {
-          sourceUrl
-          altText
-        }
-      }
+      ...PageFullFields
     }
   }
+  ${PAGE_FULL_FIELDS}
 `;
 
 // Obtener posts para blog (si tienes)
@@ -62,35 +120,35 @@ export const GET_POSTS = gql`
         date
         featuredImage {
           node {
-            sourceUrl
-            altText
+            ...MediaFields
           }
         }
       }
     }
   }
+  ${MEDIA_FIELDS}
 `;
 
 
 // Obtener opciones del sitio (ACF Options Page si usas)
-export const GET_SITE_OPTIONS = gql`
-  query GetSiteOptions {
-    acfOptionsSiteSettings {
-      siteSettings {
-        logo {
-          sourceUrl
-          altText
-        }
-        phone
-        email
-        address
-        socialLinks {
-          facebook
-          twitter
-          instagram
-          linkedin
-        }
+// Obtener todas las galerías
+export const GET_ALL_GALERIAS = gql`
+  query GetAllGalerias {
+    galerias {
+      nodes {
+        ...GaleriaFields
       }
     }
   }
+  ${GALERIA_FIELDS}
+`;
+
+// Obtener galería por slug
+export const GET_GALERIA_BY_SLUG = gql`
+  query GetGaleriaBySlug($slug: ID!) {
+    galeria(id: $slug, idType: URI) {
+      ...GaleriaFields
+    }
+  }
+  ${GALERIA_FIELDS}
 `;

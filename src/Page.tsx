@@ -4,11 +4,12 @@ import Error from "./pages/Error";
 import Gallery from "./pages/Gallery";
 import Historia from "./pages/Historia";
 import Index from "./pages/Index";
+import LoadingSpinner from "./ui/LoadingSpinner";
 
 const Page = ({ slug, loading }: { slug: string, loading: boolean }) => {
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (slug === "inicio") {

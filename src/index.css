@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+/* Definir la fuente en formato WOFF */
+@font-face {
+  font-family: 'Beatstreet';
+  src: url('/fonts/beatstreet.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Agregar la fuente a Tailwind */
+@theme {
+  --font-beatstreet: 'Beatstreet', sans-serif;
+}
 /* Define base variables that change with dark mode */
 :root {
 	/* Light-mode palette based on #17ACB3 */
@@ -12,6 +25,7 @@
 	--acme-primary-700: #0f7e86;
 	--acme-primary-800: #0b656c;
 	--acme-primary-900: #074b52;
+	--nav-height: 80px;
 }
 
 .dark {
@@ -41,9 +55,37 @@
 }
 
 html, body, #root {
+
 	height: 100%;
 }
 
 body {
 	transition: background-color .2s ease, color .2s ease;
 }
+
+body.page-loading .scroll-progress {
+	transform: scaleX(0);
+	opacity: 0;
+}
+
+html.page-snap,
+body.page-snap {
+	scroll-snap-type: y proximity;
+}
+
+.home-section {
+	height: 100vh;
+	scroll-snap-align: start;
+}
+
+.page-with-navbar {
+	padding-top: var(--nav-height);
+	min-height: calc(100vh - var(--nav-height));
+	box-sizing: border-box;
+}
+
+.site-footer {
+	scroll-snap-align: end;
+}
+
+
