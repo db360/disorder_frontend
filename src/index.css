@@ -88,4 +88,17 @@ body.page-snap {
 	scroll-snap-align: end;
 }
 
+.scroll-text-image {
+	color: #0f7e86;
+	background-clip: text;
+	-webkit-background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+	.scroll-text-image {
+		color: transparent;
+		-webkit-text-fill-color: transparent;
+	}
+}
+
 

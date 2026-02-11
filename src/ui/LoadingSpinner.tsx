@@ -13,7 +13,7 @@ export default function LoadingSpinner() {
                         d="M 100,100 m -70,0 a 70,70 0 1,1 140,0 a 70,70 0 1,1 -140,0"
                     />
                 </defs>
-                <g className="origin-center animate-spin" style={{ animationDuration: "2s" }}>
+                <g className="origin-center animate-spin" style={{ animationDuration: "3s" }}>
                     <text className="fill-current text-[18px] uppercase tracking-[0.30em]">
                         <textPath href="#spinner-text-path" startOffset="0%">
                             Disorder   Underground   Shop   •

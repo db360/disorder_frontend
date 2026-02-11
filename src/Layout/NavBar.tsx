@@ -2,7 +2,7 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Link } from "react-router-dom";
 import usePages from "../hooks/usePages";
 import ThemeToggle from "../ui/ThemeToggle";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HamburgerMenu from "../ui/HamburgerMenu";
 
 export default function NavBar() {
@@ -10,6 +10,7 @@ export default function NavBar() {
   const [hidden, setHidden] = useState(false);
   const lastScrollY = useRef(0);
   const hiddenAt = useRef(0);
+  const headerRef = useRef<HTMLElement | null>(null);
   const { scrollY } = useScroll();
   const logoSrc = "http://localhost:8883/wp-content/uploads/2026/02/navLogo2.webp";
   const logoSrcSet = [
@@ -52,11 +53,42 @@ export default function NavBar() {
     }
   });
 
+  useEffect(() => {
+    const headerEl = headerRef.current;
+
+    if (!headerEl) {
+      return;
+    }
+
+    const setHeaderHeight = () => {
+      const height = headerEl.getBoundingClientRect().height;
+      document.documentElement.style.setProperty(
+        "--navbar-height",
+        `${height}px`,
+      );
+    };
+
+    setHeaderHeight();
+
+    const observer = new ResizeObserver(() => {
+      setHeaderHeight();
+    });
+
+    observer.observe(headerEl);
+    window.addEventListener("resize", setHeaderHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", setHeaderHeight);
+    };
+  }, []);
+
   const headerClasses =
     "site-navbar transition-colors fixed top-0 left-0 right-0 z-50 w-full bg-primary-200 dark:bg-primary-800";
 
   return (
     <motion.header
+      ref={headerRef}
       className={headerClasses}
       initial={false}
       animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
