@@ -89,7 +89,7 @@ export default function ScreenFitText({ text }: { text: string }) {
           </mask>
         </defs>
         <image
-          href="http://localhost:8883/wp-content/uploads/2026/02/19.jpg"
+          href={`${(import.meta.env.VITE_WORDPRESS_URL ?? "").replace(/\/$/, "")}/wp-content/uploads/2026/02/19.jpg`}
           width="100%"
           height="100%"
           x="0%"

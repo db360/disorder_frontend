@@ -1,7 +1,14 @@
 import { useState } from "react";
 
 const CF7_FORM_ID = "105";
-const CF7_ENDPOINT = `http://localhost:8883/wp-json/contact-form-7/v1/contact-forms/${CF7_FORM_ID}/feedback`;
+const WORDPRESS_BASE_URL = import.meta.env.VITE_WORDPRESS_URL;
+
+if (!WORDPRESS_BASE_URL) {
+    console.error("VITE_WORDPRESS_URL is not defined in environment variables.");
+}
+
+const normalizedBaseUrl = WORDPRESS_BASE_URL?.replace(/\/$/, "") ?? "";
+const CF7_ENDPOINT = `${normalizedBaseUrl}/wp-json/contact-form-7/v1/contact-forms/${CF7_FORM_ID}/feedback`;
 
 export default function ContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
