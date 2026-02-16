@@ -79,8 +79,8 @@ body.page-snap {
 }
 
 .page-with-navbar {
-	padding-top: var(--nav-height);
-	min-height: calc(100vh - var(--nav-height));
+	padding-top: var(--nav-height, var(--navbar-height, 80px));
+	min-height: calc(100vh - var(--nav-height, var(--navbar-height, 80px)));
 	box-sizing: border-box;
 }
 
@@ -90,8 +90,8 @@ body.page-snap {
 
 .scroll-text-image {
 	color: #0f7e86;
-	background-clip: text;
 	-webkit-background-clip: text;
+	background-clip: text;
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {

@@ -1,14 +1,21 @@
 import { useState } from "react";
 
 const CF7_FORM_ID = "105";
-const CF7_ENDPOINT = `http://localhost:8883/wp-json/contact-form-7/v1/contact-forms/${CF7_FORM_ID}/feedback`;
+const WORDPRESS_BASE_URL = import.meta.env.VITE_WORDPRESS_URL;
+
+if (!WORDPRESS_BASE_URL) {
+    console.error("VITE_WORDPRESS_URL is not defined in environment variables.");
+}
+
+const normalizedBaseUrl = WORDPRESS_BASE_URL?.replace(/\/$/, "") ?? "";
+const CF7_ENDPOINT = `${normalizedBaseUrl}/wp-json/contact-form-7/v1/contact-forms/${CF7_FORM_ID}/feedback`;
 
 export default function ContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
     const unitTag = `wpcf7-f${CF7_FORM_ID}-p0-o1`;
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsSubmitting(true);
         setStatusMessage(null);
@@ -41,7 +48,7 @@ export default function ContactForm() {
 
     return (
         <form
-            className="max-w-md mx-auto text-primary-900 dark:text-primary-100 py-5"
+            className="mx-auto text-primary-900 dark:text-primary-100 w-1/3"
             onSubmit={handleSubmit}
         >
             <input type="hidden" name="_wpcf7" value={CF7_FORM_ID} />

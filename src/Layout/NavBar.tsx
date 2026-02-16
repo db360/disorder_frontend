@@ -5,6 +5,7 @@ import ThemeToggle from "../ui/ThemeToggle";
 import { useEffect, useRef, useState } from "react";
 import HamburgerMenu from "../ui/HamburgerMenu";
 
+
 export default function NavBar() {
   const { pages, loading, error } = usePages();
   const [hidden, setHidden] = useState(false);
@@ -12,9 +13,8 @@ export default function NavBar() {
   const hiddenAt = useRef(0);
   const headerRef = useRef<HTMLElement | null>(null);
   const { scrollY } = useScroll();
-  
-  const WORDPRESS_URL = import.meta.env.VITE_WORDPRESS_URL || "http://localhost:8883";
-  const logoBasePath = `${WORDPRESS_URL}wp-content/uploads/2026/02/navLogo2`;
+  const wordpressBaseUrl = import.meta.env.VITE_WORDPRESS_URL?.replace(/\/$/, "");
+  const logoBasePath = `${wordpressBaseUrl ?? ""}/wp-content/uploads/2026/02/navLogo2`;
   
   const logoSrc = `${logoBasePath}.webp`;
   const logoSrcSet = [
@@ -99,6 +99,7 @@ export default function NavBar() {
       transition={{ duration: 0.2, ease: "easeOut" }}
       style={{ pointerEvents: hidden ? "none" : "auto" }}
     >
+
       <motion.nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between font-beatstreet">
         {/* Left: Logo (20%) */}
         <div className="basis-1/5 flex items-center justify-start">

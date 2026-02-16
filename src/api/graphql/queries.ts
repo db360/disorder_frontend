@@ -146,9 +146,27 @@ export const GET_ALL_GALERIAS = gql`
 // Obtener galería por slug
 export const GET_GALERIA_BY_SLUG = gql`
   query GetGaleriaBySlug($slug: ID!) {
-    galeria(id: $slug, idType: URI) {
+    galeria(id: $slug, idType: SLUG) {
       ...GaleriaFields
     }
   }
   ${GALERIA_FIELDS}
+`;
+
+export const GET_MEDIA_ITEMS_BY_IDS = gql`
+  query GetMediaItemsByIds($ids: [ID]) {
+    mediaItems(where: { in: $ids }) {
+      nodes {
+        databaseId
+        sourceUrl
+        mediaDetails {
+          width
+          sizes {
+            sourceUrl
+            width
+          }
+        }
+      }
+    }
+  }
 `;

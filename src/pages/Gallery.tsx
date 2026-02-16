@@ -43,7 +43,7 @@ export default function Gallery() {
               .concat(`${img.sourceUrl} ${img.mediaDetails?.width ?? 0}w`)
               .join(", "),
             sizes: "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
-            title: galeria.seo?.title ?? galeria.title,
+            title: galeria.title,
             description: galeria.seo?.metaDesc ?? img.altText ?? "",
           }))
         ),
