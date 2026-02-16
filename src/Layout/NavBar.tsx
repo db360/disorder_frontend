@@ -12,14 +12,18 @@ export default function NavBar() {
   const hiddenAt = useRef(0);
   const headerRef = useRef<HTMLElement | null>(null);
   const { scrollY } = useScroll();
-  const logoSrc = "http://localhost:8883/wp-content/uploads/2026/02/navLogo2.webp";
+  
+  const WORDPRESS_URL = import.meta.env.VITE_WORDPRESS_URL || "http://localhost:8883";
+  const logoBasePath = `${WORDPRESS_URL}wp-content/uploads/2026/02/navLogo2`;
+  
+  const logoSrc = `${logoBasePath}.webp`;
   const logoSrcSet = [
-    "http://localhost:8883/wp-content/uploads/2026/02/navLogo2-150x150.webp 150w",
-    "http://localhost:8883/wp-content/uploads/2026/02/navLogo2-300x79.webp 300w",
-    "http://localhost:8883/wp-content/uploads/2026/02/navLogo2-768x202.webp 768w",
-    "http://localhost:8883/wp-content/uploads/2026/02/navLogo2-1024x270.webp 1024w",
-    "http://localhost:8883/wp-content/uploads/2026/02/navLogo2-1536x404.webp 1536w",
-    "http://localhost:8883/wp-content/uploads/2026/02/navLogo2-2048x539.webp 2048w",
+    `${logoBasePath}-150x150.webp 150w`,
+    `${logoBasePath}-300x79.webp 300w`,
+    `${logoBasePath}-768x202.webp 768w`,
+    `${logoBasePath}-1024x270.webp 1024w`,
+    `${logoBasePath}-1536x404.webp 1536w`,
+    `${logoBasePath}-2048x539.webp 2048w`,
   ].join(", ");
   const logoAlt = "Logo NavBar Disorder Underground Shop";
 

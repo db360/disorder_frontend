@@ -6,6 +6,8 @@ export default function ScreenFitText({ text }: { text: string }) {
   const maskTextRef = useRef<SVGTextElement>(null);
   const glowTextRef = useRef<SVGTextElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  
+  const WORDPRESS_URL = import.meta.env.VITE_WORDPRESS_URL || "http://localhost:8883";
 
   const resizeText = () => {
     const container = containerRef.current;
@@ -89,7 +91,7 @@ export default function ScreenFitText({ text }: { text: string }) {
           </mask>
         </defs>
         <image
-          href="http://localhost:8883/wp-content/uploads/2026/02/19.jpg"
+          href={`${WORDPRESS_URL}wp-content/uploads/2026/02/19.jpg`}
           width="100%"
           height="100%"
           x="0%"
