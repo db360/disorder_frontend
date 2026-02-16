@@ -5,6 +5,7 @@ import ThemeToggle from "../ui/ThemeToggle";
 import { useEffect, useRef, useState } from "react";
 import HamburgerMenu from "../ui/HamburgerMenu";
 
+
 export default function NavBar() {
   const { pages, loading, error } = usePages();
   const [hidden, setHidden] = useState(false);
@@ -96,6 +97,7 @@ export default function NavBar() {
       transition={{ duration: 0.2, ease: "easeOut" }}
       style={{ pointerEvents: hidden ? "none" : "auto" }}
     >
+
       <motion.nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between font-beatstreet">
         {/* Left: Logo (20%) */}
         <div className="basis-1/5 flex items-center justify-start">

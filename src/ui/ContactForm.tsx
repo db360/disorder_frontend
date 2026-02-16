@@ -15,7 +15,7 @@ export default function ContactForm() {
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
     const unitTag = `wpcf7-f${CF7_FORM_ID}-p0-o1`;
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsSubmitting(true);
         setStatusMessage(null);
@@ -48,7 +48,7 @@ export default function ContactForm() {
 
     return (
         <form
-            className="max-w-md mx-auto text-primary-900 dark:text-primary-100 py-5"
+            className="mx-auto text-primary-900 dark:text-primary-100 w-1/3"
             onSubmit={handleSubmit}
         >
             <input type="hidden" name="_wpcf7" value={CF7_FORM_ID} />

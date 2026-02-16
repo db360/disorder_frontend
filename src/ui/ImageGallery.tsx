@@ -10,13 +10,25 @@ export type GalleryImage = {
   description?: string;
 };
 
+const shuffleImages = (images: GalleryImage[]): GalleryImage[] => {
+  const shuffled = [...images];
+
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled;
+};
+
 export default function ImageGallery({ images }: { images?: GalleryImage[] }) {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
-
-
-  const galleryImages = useMemo(() => (images && images.length > 0 ? images : []), [images]);
+  const galleryImages = useMemo(
+    () => (images && images.length > 0 ? shuffleImages(images) : []),
+    [images],
+  );
 
   const openLightbox = (image: GalleryImage) => {
     setSelectedImage(image);
@@ -66,7 +78,7 @@ export default function ImageGallery({ images }: { images?: GalleryImage[] }) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isLightboxOpen, selectedImage, goToNext, goToPrev]);
+  }, [isLightboxOpen, selectedImage, goToNext, goToPrev, closeLightbox]);
 
   return (
     <div className="min-h-[calc(100vh-var(--nav-height))] py-12 px-4 sm:px-6 lg:px-8 text-primary-100">
@@ -137,10 +149,12 @@ export default function ImageGallery({ images }: { images?: GalleryImage[] }) {
                   <img
                     className="w-full h-[70vh] md:h-[75vh] object-cover"
                     src={selectedImage.src}
+                    srcSet={selectedImage.srcSet}
+                    sizes={selectedImage.sizes ?? "100vw"}
                     alt={selectedImage.title}
                   />
                   <div className="absolute inset-0 pointer-events-none z-10">
-                    <div className="absolute left-0 top-0 h-full w-full md:w-96 bg-gradient-to-r from-black/85 via-black/50 to-transparent p-6 text-white drop-shadow flex flex-col justify-between pointer-events-auto">
+                    <div className="absolute left-0 top-0 h-full w-full md:w-96 bg-linear-to-r from-black/85 via-black/50 to-transparent p-6 text-white drop-shadow flex flex-col justify-between pointer-events-auto">
                       <div>
                         <h2 className="text-2xl font-bold mb-2">
                           {selectedImage.title}

@@ -1,6 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function ScreenFitText({ text }: { text: string }) {
+type ScrollTextProps = {
+  text: string;
+  textSize?: number;
+  textY?: number;
+  className?: string;
+  containerClassName?: string;
+};
+
+export default function ScreenFitText({
+  text,
+  textSize,
+  textY = 40,
+  className,
+  containerClassName,
+}: ScrollTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<SVGTextElement>(null);
   const maskTextRef = useRef<SVGTextElement>(null);
@@ -14,6 +28,14 @@ export default function ScreenFitText({ text }: { text: string }) {
     const glowText = glowTextRef.current;
 
     if (!container || !text || !maskText || !glowText) {
+      return;
+    }
+
+    if (textSize) {
+      const sizeValue = `${textSize}px`;
+      text.style.fontSize = sizeValue;
+      maskText.style.fontSize = sizeValue;
+      glowText.style.fontSize = sizeValue;
       return;
     }
 
@@ -41,16 +63,18 @@ export default function ScreenFitText({ text }: { text: string }) {
   useEffect(() => {
     resizeText();
 
-    window.addEventListener("resize", resizeText);
+    if (!textSize) {
+      window.addEventListener("resize", resizeText);
+    }
 
     return () => {
       window.removeEventListener("resize", resizeText);
     };
-  }, []);
+  }, [textSize]);
 
   return (
     <div
-      className="relative flex h-screen w-full items-end overflow-hidden"
+      className={`relative w-full overflow-hidden ${className ?? containerClassName ?? "h-screen"}`}
       ref={containerRef}
     >
       <svg
@@ -73,12 +97,20 @@ export default function ScreenFitText({ text }: { text: string }) {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          <mask id="scroll-text-mask" maskUnits="objectBoundingBox">
-            <rect width="1" height="1" fill="black" />
+          <mask
+            id="scroll-text-mask"
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            maskUnits="userSpaceOnUse"
+            maskContentUnits="userSpaceOnUse"
+          >
+            <rect x="0" y="0" width="100%" height="100%" fill="black" />
             <text
               ref={maskTextRef}
               x="50%"
-              y="40%"
+              y={`${textY}%`}
               textAnchor="middle"
               dominantBaseline="middle"
               className="font-beatstreet uppercase"
@@ -101,15 +133,16 @@ export default function ScreenFitText({ text }: { text: string }) {
         <text
           ref={glowTextRef}
           x="50%"
-          y="40%"
+          y={`${textY}%`}
           textAnchor="middle"
           dominantBaseline="middle"
-          className="font-beatstreet uppercase transition-opacity duration-300 cursor-default select-none"
+          className={`font-beatstreet uppercase transition-opacity duration-300 cursor-default select-none ${
+            isHovered ? "opacity-100" : "opacity-0"
+          }`}
           fill="transparent"
           stroke="currentColor"
           strokeWidth="6"
           filter="url(#text-glow)"
-          style={{ opacity: isHovered ? 1 : 0 }}
           pointerEvents="none"
         >
           {text}
@@ -117,7 +150,7 @@ export default function ScreenFitText({ text }: { text: string }) {
         <text
           ref={textRef}
           x="50%"
-          y="40%"
+          y={`${textY}%`}
           textAnchor="middle"
           dominantBaseline="middle"
           className="font-beatstreet uppercase cursor-default select-none"

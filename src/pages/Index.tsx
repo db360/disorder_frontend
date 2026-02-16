@@ -5,6 +5,10 @@ import type { GetPageBySlugQuery } from "../api/graphql/generated";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import useSEO from "../hooks/useSEO";
 import ScrollText from "../ui/ScrollText";
+import SwipeCarousel from "../ui/Carousel";
+import { parseWordPressContent } from "../lib/parseWordPressContent";
+import Map from "../ui/Map";
+import RevealLinks from "../ui/RevealLinks";
 
 export default function Index() {
   const [page, setPage] = useState<GetPageBySlugQuery["page"] | null>(null);
@@ -53,11 +57,46 @@ export default function Index() {
     () => [
       { id: "hero", title: page?.title ?? "Inicio", subtitle: "Sección 1" },
       { id: "intro", title: "Sección 2", subtitle: "Texto de apoyo" },
-      { id: "services", title: "Sección 3", subtitle: "Texto de apoyo" },
-      { id: "gallery", title: "Sección 4", subtitle: "Texto de apoyo" },
+      { id: "gallery", title: "Sección 3", subtitle: "Texto de apoyo" },
+      { id: "services", title: "Sección 4", subtitle: "Texto de apoyo" },
       { id: "contact", title: "Sección 5", subtitle: "Texto de apoyo" },
     ],
     [page],
+  );
+
+  const parsedContent = useMemo(
+    () => parseWordPressContent(page?.content),
+    [page?.content],
+  );
+
+  const galleryImagesBySelection = useMemo(
+    () => {
+      const toCarouselImages = (images: typeof parsedContent.images) =>
+        images.map((image) => ({
+        id: image.id,
+        src: image.src,
+        srcSet: image.srcSet,
+        sizes: image.sizes,
+        title: image.alt || page?.title || "Imagen",
+      }));
+
+      const first = toCarouselImages(parsedContent.galleries[0]?.images ?? []);
+      const second = toCarouselImages(parsedContent.galleries[1]?.images ?? []);
+      const bothFromBlocks = toCarouselImages(
+        parsedContent.galleries.flatMap((gallery) => gallery.images),
+      );
+      const both =
+        bothFromBlocks.length > 0
+          ? bothFromBlocks
+          : toCarouselImages(parsedContent.images);
+
+      return {
+        first,
+        second,
+        both,
+      };
+    },
+    [parsedContent, page?.title],
   );
 
   useSEO(page?.seo, {
@@ -68,7 +107,7 @@ export default function Index() {
   });
 
   if (!page) return <LoadingSpinner />;
-  
+
   return (
     <div className="home-sections">
       {sections.map((section, index) => {
@@ -83,26 +122,69 @@ export default function Index() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ amount: 0.6 }}
           >
-            {section.id !== "hero" && (
-              <div className="text-center max-w-2xl">
-                <p className="text-sm uppercase tracking-widest text-primary-300 dark:text-primary-200">
-                  {section.subtitle}
-                </p>
-                <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-bold text-primary-600 dark:text-white">
-                  {section.title}
-                </h1>
-                <p className="mt-4 text-base sm:text-lg text-primary-500 dark:text-primary-100">
-                  Contenedor {index + 1} de 5. Ajusta este contenido según tu
-                  diseño.
-                </p>
+            {section.id !== "hero" &&
+              section.id !== "gallery" &&
+              section.id !== "intro" && (
+                <div className="text-center max-w-2xl">
+                  <p className="text-sm uppercase tracking-widest text-primary-300 dark:text-primary-200">
+                    {section.subtitle}
+                  </p>
+                  <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-bold text-primary-600 dark:text-white">
+                    {section.title}
+                  </h1>
+                  <p className="mt-4 text-base sm:text-lg text-primary-500 dark:text-primary-100">
+                    Contenedor {index + 1} de 5. Ajusta este contenido según tu
+                    diseño.
+                  </p>
+                </div>
+              )}
+
+            {section.id === "hero" && (
+              <div className="w-full h-full">
+                <ScrollText
+                  text="Disorder Underground Shop"
+                  textSize={123}
+                  textY={50}
+                  containerClassName="h-100"
+                />
+                <div className="max-w-3xl mx-auto space-y-4 px-6 text-center">
+                  {parsedContent.paragraphs.map((paragraph, paragraphIndex) => (
+                    <p
+                      key={`${section.id}-paragraph-${paragraphIndex}`}
+                      className="text-2xl text-primary-500 dark:text-primary-100"
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
               </div>
             )}
 
-            {section.id === "hero" && (
-              <div className="w-full">
-                <ScrollText text="Disorder Underground Shop" />
-              </div>
+            {section.id === "gallery" && (
+              <>
+                <div className="w-2/3 flex flex-col items-center">
+                  <div>
+                    <h2 className="text-3xl font-bold text-primary-600 dark:text-white mb-2 text-center">
+                      Nos encontramos en:{" "}
+                      <span>Plaza de la Libertad 3 Local 7B</span>
+                    </h2>
+                    <h3 className="text-2xl font-semibold text-primary-500 dark:text-primary-100 text-center mb-10">
+                      San Pedro Alcántara
+                    </h3>
+                  </div>
+                  <div className="w-200 mb-10">
+                    <SwipeCarousel images={galleryImagesBySelection.first} dots={false} />
+                  </div>
+
+                  <Map height={300} />
+                </div>
+                <RevealLinks />
+              </>
             )}
+
+            {section.id === "intro" && <div className="w-2/3">
+              <SwipeCarousel images={galleryImagesBySelection.second} dots={false} />
+            </div>}
           </motion.section>
         );
       })}
