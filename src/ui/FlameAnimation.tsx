@@ -12,7 +12,6 @@ type FlameAnimationProps = {
   centerFrames?: boolean;
   frameOffsetY?: number;
   className?: string;
-  style?: React.CSSProperties;
 };
 
 export default function FlameAnimation({
@@ -27,7 +26,6 @@ export default function FlameAnimation({
   centerFrames = true,
   frameOffsetY = 0,
   className,
-  style,
 }: FlameAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -38,6 +36,7 @@ export default function FlameAnimation({
   const [speed, setSpeed] = useState(fps);
   const [resolvedFrameWidth, setResolvedFrameWidth] = useState(frameWidth ?? 0);
   const [resolvedFrameHeight, setResolvedFrameHeight] = useState(frameHeight ?? 0);
+  const [isReady, setIsReady] = useState(false);
   const [frameBounds, setFrameBounds] = useState<
     Array<{ minX: number; minY: number; maxX: number; maxY: number }>
   >([]);
@@ -114,6 +113,7 @@ export default function FlameAnimation({
   );
 
   useEffect(() => {
+    setIsReady(false);
     const img = new Image();
     img.src = spriteSheetUrl;
 
@@ -124,6 +124,7 @@ export default function FlameAnimation({
         setResolvedFrameHeight(Math.floor(img.naturalHeight / rows));
       }
       drawFrame(frameRef.current);
+      setIsReady(true);
     };
 
     img.addEventListener("load", handleLoad);
@@ -270,8 +271,7 @@ export default function FlameAnimation({
       ref={canvasRef}
       width={resolvedFrameWidth || frameWidth || 1}
       height={resolvedFrameHeight || frameHeight || 1}
-      className={className ?? "block"}
-      style={{ filter: "drop-shadow(0 0 12px rgba(255, 140, 64, 0.45))", ...style }}
+      className={`flame-animation-canvas ${isReady ? "is-visible" : "is-hidden"} ${className ?? "block"}`}
     />
   );
 };

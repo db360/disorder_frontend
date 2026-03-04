@@ -111,7 +111,7 @@ export const GET_PAGE_BY_SLUG = gql`
 // Obtener posts para blog (si tienes)
 export const GET_POSTS = gql`
   query GetPosts($first: Int = 10) {
-    posts(first: $first) {
+    posts(first: $first, where: { status: PUBLISH, orderby: { field: DATE, order: DESC } }) {
       nodes {
         id
         title
@@ -169,4 +169,33 @@ export const GET_MEDIA_ITEMS_BY_IDS = gql`
       }
     }
   }
+`;
+
+export const GET_POST_BY_SLUG = gql`
+  query GetPostBySlug($slug: ID!) {
+    post(id: $slug, idType: SLUG) {
+      id
+      title
+      slug
+      content
+      excerpt
+      date
+      seo {
+        title
+        metaDesc
+        opengraphTitle
+        opengraphDescription
+        opengraphImage {
+          sourceUrl
+        }
+        canonical
+      }
+      featuredImage {
+        node {
+          ...MediaFields
+        }
+      }
+    }
+  }
+  ${MEDIA_FIELDS}
 `;

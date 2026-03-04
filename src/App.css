@@ -1,1 +1,16 @@
-@import "tailwindcss";
+.page-navbar-offset {
+	padding-top: var(--navbar-height, 80px);
+}
+
+.flame-animation-canvas {
+	filter: drop-shadow(0 0 12px rgba(255, 140, 64, 0.45));
+	transition: opacity 320ms ease-out;
+}
+
+.flame-animation-canvas.is-hidden {
+	opacity: 0;
+}
+
+.flame-animation-canvas.is-visible {
+	opacity: 1;
+}

@@ -3,11 +3,17 @@ import { getAllGalerias } from "../lib/apiFunctions";
 import ImageGallery from "../ui/ImageGallery";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import type { Galeria } from "../types/wordpress";
+import useSEO from "../hooks/useSEO";
 
 export default function Gallery() {
   const [galleries, setGalleries] = useState<Galeria[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useSEO(undefined, {
+    title: "Galería",
+    description: "Explora la galería de trabajos de Disorder Underground Shop.",
+  });
 
   useEffect(() => {
     let isMounted = true;

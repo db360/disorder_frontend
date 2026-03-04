@@ -5,28 +5,59 @@ import { parseTeamContent } from "../lib/parseTeamContent";
 import type { Galeria } from "../types/wordpress";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import SwipeCarousel from "../ui/Carousel";
+import useSEO from "../hooks/useSEO";
 
 export default function Equipo() {
     const [page, setPage] = useState<GetPageBySlugQuery["page"] | null>(null);
     const [galleriesBySlug, setGalleriesBySlug] = useState<Record<string, Galeria>>({});
-    const [loading, setLoading] = useState(true);
+    const [loadingPage, setLoadingPage] = useState(true);
+    const [loadingGalleries, setLoadingGalleries] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
 
-        const loadData = async () => {
+        const loadPage = async () => {
             try {
                 const equipoPage = await getPageBySlug("nuestro-equipo");
                 if (!isMounted) return;
                 setPage(equipoPage);
-
-                const artists = parseTeamContent(equipoPage?.content);
-                const gallerySlugs = [...new Set(artists.map((artist) => artist.gallerySlug).filter(Boolean))] as string[];
-
-                if (gallerySlugs.length === 0) {
-                    return;
+            } finally {
+                if (isMounted) {
+                    setLoadingPage(false);
                 }
+            }
+        };
 
+        loadPage();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    const artists = useMemo(() => parseTeamContent(page?.content), [page?.content]);
+    const gallerySlugs = useMemo(
+        () => [...new Set(artists.map((artist) => artist.gallerySlug).filter(Boolean))] as string[],
+        [artists],
+    );
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadGalleries = async () => {
+            if (gallerySlugs.length === 0) {
+                if (isMounted) {
+                    setGalleriesBySlug({});
+                    setLoadingGalleries(false);
+                }
+                return;
+            }
+
+            if (isMounted) {
+                setLoadingGalleries(true);
+            }
+
+            try {
                 const galleries = await Promise.all(
                     gallerySlugs.map(async (slug) => ({
                         slug,
@@ -45,21 +76,26 @@ export default function Equipo() {
                 setGalleriesBySlug(normalized);
             } finally {
                 if (isMounted) {
-                    setLoading(false);
+                    setLoadingGalleries(false);
                 }
             }
         };
 
-        loadData();
+        loadGalleries();
 
         return () => {
             isMounted = false;
         };
-    }, []);
+    }, [gallerySlugs]);
 
-    const artists = useMemo(() => parseTeamContent(page?.content), [page?.content]);
+    useSEO(page?.seo, {
+        title: page?.title ?? "Nuestro equipo",
+        description:
+            page?.seo?.metaDesc ??
+            "Conoce a los artistas de Disorder Underground Shop y su estilo de trabajo.",
+    });
 
-    if (loading) return <LoadingSpinner />;
+    if (loadingPage || loadingGalleries) return <LoadingSpinner />;
 
     return (
         <div className="page-with-navbar px-6 py-10 space-y-12 mt-10">

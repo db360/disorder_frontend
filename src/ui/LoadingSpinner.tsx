@@ -16,7 +16,7 @@ export default function LoadingSpinner() {
                             d="M 100,100 m -70,0 a 70,70 0 1,1 140,0 a 70,70 0 1,1 -140,0"
                         />
                     </defs>
-                    <g className="origin-center animate-spin" style={{ animationDuration: "3s" }}>
+                    <g className="origin-center animate-spin [animation-duration:3s]">
                         <text className="fill-current text-[18px] uppercase tracking-[0.30em]">
                             <textPath href="#spinner-text-path" startOffset="0%">
                                 Disorder   Underground   Shop   •
@@ -26,7 +26,7 @@ export default function LoadingSpinner() {
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                     <FlameAnimation
-                        spriteSheetUrl="/img/flames-animation.png"
+                        spriteSheetUrl="/img/animacion-burni.png"
                         className="w-16 h-16"
                         frameOffsetY={6}
                     />

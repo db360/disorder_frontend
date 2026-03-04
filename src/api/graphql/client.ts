@@ -9,21 +9,7 @@ if(!GRAPHQL_URL) {
 }
 
 // CACHÉ
-
-const cache = new InMemoryCache({
-    typePolicies: {
-        Query: {
-            fields: {
-                posts: {
-                    keyArgs: false,
-                    merge(existing = [], incoming){
-                        return [...existing, ...incoming];
-                    }
-                }
-            }
-        }
-    }
-})
+const cache = new InMemoryCache();
 
 const client = new ApolloClient({
     link: new HttpLink({

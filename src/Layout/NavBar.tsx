@@ -2,30 +2,41 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Link } from "react-router-dom";
 import usePages from "../hooks/usePages";
 import ThemeToggle from "../ui/ThemeToggle";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import HamburgerMenu from "../ui/HamburgerMenu";
 
 
 export default function NavBar() {
   const { pages, loading, error } = usePages();
   const [hidden, setHidden] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
   const lastScrollY = useRef(0);
   const hiddenAt = useRef(0);
   const headerRef = useRef<HTMLElement | null>(null);
   const { scrollY } = useScroll();
-  const wordpressBaseUrl = import.meta.env.VITE_WORDPRESS_URL?.replace(/\/$/, "");
-  const logoBasePath = `${wordpressBaseUrl ?? ""}/wp-content/uploads/2026/02/navLogo2`;
-  
-  const logoSrc = `${logoBasePath}.webp`;
-  const logoSrcSet = [
-    `${logoBasePath}-150x150.webp 150w`,
-    `${logoBasePath}-300x79.webp 300w`,
-    `${logoBasePath}-768x202.webp 768w`,
-    `${logoBasePath}-1024x270.webp 1024w`,
-    `${logoBasePath}-1536x404.webp 1536w`,
-    `${logoBasePath}-2048x539.webp 2048w`,
-  ].join(", ");
+  const logoSrc = "/img/logo-navbar.svg";
+  const logoVideoSrc = "/videos/logo-navbar.mp4";
   const logoAlt = "Logo NavBar Disorder Underground Shop";
+  const menuItems = useMemo(() => {
+    const wpItems = pages
+      .filter((page) => page.slug !== "inicio")
+      .slice()
+      .sort((a, b) => (a.menuOrder ?? 0) - (b.menuOrder ?? 0));
+
+    if (wpItems.some((item) => item.slug === "blog")) {
+      return wpItems;
+    }
+
+    return [
+      ...wpItems,
+      {
+        id: "static-blog-link",
+        slug: "blogs",
+        title: "Blogs",
+        menuOrder: 5,
+      },
+    ];
+  }, [pages]);
 
   const listVariants = {
     hidden: { opacity: 0 },
@@ -103,23 +114,31 @@ export default function NavBar() {
       <motion.nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between font-beatstreet">
         {/* Left: Logo (20%) */}
         <div className="basis-1/5 flex items-center justify-start">
-          {logoSrc ? (
-        <Link to="/" className="flex items-center">
-            <img
-              src={logoSrc}
-              srcSet={logoSrcSet}
-              sizes="(min-width: 1024px) 160px, 120px"
-              alt={logoAlt}
-              className="h-12 w-auto"
-              loading="eager"
-              decoding="async"
-            />
+          <Link to="/" className="flex items-center" aria-label={logoAlt}>
+            {!videoFailed ? (
+              <span className="navbar-logo-video-mask" aria-hidden="true">
+                <video
+                  className="navbar-logo-video"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  onError={() => setVideoFailed(true)}
+                >
+                  <source src={logoVideoSrc} type="video/webm" />
+                </video>
+              </span>
+            ) : (
+              <img
+                src={logoSrc}
+                alt={logoAlt}
+                className="h-12 w-auto"
+                loading="eager"
+                decoding="async"
+              />
+            )}
           </Link>
-          ) : (
-            <Link to="/" className="flex items-center">
-            <h1 className="text-2xl text-primary-900 dark:text-primary-100">Disorder</h1>
-          </Link>
-          )}
         </div>
         {/* Center: Links (60%) */}
         <div className="basis-3/5 hidden lg:flex items-center justify-center text-2xl">
@@ -138,11 +157,7 @@ export default function NavBar() {
               initial="hidden"
               animate="visible"
             >
-              {pages
-                .filter((page) => page.slug !== "inicio")
-                .slice()
-                .sort((a, b) => (a.menuOrder ?? 0) - (b.menuOrder ?? 0))
-                .map((page) => (
+              {menuItems.map((page) => (
                   <motion.li
                     key={page.id}
                     className="flex items-center"
@@ -163,7 +178,7 @@ export default function NavBar() {
         <div className="basis-1/5 flex items-center justify-end gap-3">
           <ThemeToggle />
           <div className="lg:hidden">
-            <HamburgerMenu items={pages} loading={loading} error={error} />
+            <HamburgerMenu items={menuItems} loading={loading} error={error} />
           </div>
         </div>
       </motion.nav>

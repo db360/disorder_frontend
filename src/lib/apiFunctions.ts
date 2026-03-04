@@ -2,7 +2,6 @@ import client from "../api/graphql/client";
 import {
   GetAllPageSlugsDocument,
   GetAllPagesDocument,
-  GetGaleriaBySlugDocument,
   type GetAllPageSlugsQuery,
   type GetAllPagesQuery,
   type GetPageBySlugQuery,
@@ -16,6 +15,8 @@ import {
   GET_GALERIA_BY_SLUG,
   GET_MEDIA_ITEMS_BY_IDS,
   GET_PAGE_BY_SLUG,
+  GET_POSTS,
+  GET_POST_BY_SLUG,
 } from "../api/graphql/queries";
 
 import type { WordPressPage, WPMenuItem, Galeria } from "../types/wordpress";
@@ -40,6 +41,85 @@ type GetMediaItemsByIdsQuery = {
 
 type GetMediaItemsByIdsQueryVariables = {
   ids: string[];
+};
+
+export type BlogPostListItem = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string | null;
+  featuredImage?: {
+    sourceUrl: string;
+    altText: string | null;
+  };
+};
+
+export type BlogPostDetail = {
+  id: string;
+  slug: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  date: string | null;
+  seo?: {
+    title?: string | null;
+    metaDesc?: string | null;
+    opengraphTitle?: string | null;
+    opengraphDescription?: string | null;
+    opengraphImage?: {
+      sourceUrl?: string | null;
+    } | null;
+    canonical?: string | null;
+  } | null;
+  featuredImage?: {
+    sourceUrl: string;
+    altText: string | null;
+  };
+};
+
+type GetPostBySlugQuery = {
+  post?: {
+    id: string;
+    slug?: string | null;
+    title?: string | null;
+    content?: string | null;
+    excerpt?: string | null;
+    date?: string | null;
+    seo?: BlogPostDetail["seo"];
+    featuredImage?: {
+      node?: {
+        sourceUrl?: string | null;
+        altText?: string | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
+type GetPostBySlugQueryVariables = {
+  slug: string;
+};
+
+type GetPostsListQuery = {
+  posts?: {
+    nodes?: Array<{
+      id: string;
+      slug?: string | null;
+      title?: string | null;
+      excerpt?: string | null;
+      date?: string | null;
+      featuredImage?: {
+        node?: {
+          sourceUrl?: string | null;
+          altText?: string | null;
+        } | null;
+      } | null;
+    } | null> | null;
+  } | null;
+};
+
+type GetPostsListQueryVariables = {
+  first?: number;
 };
 
 const DEFAULT_CONTENT_IMAGE_SIZES = "(min-width: 1024px) 1024px, 100vw";
@@ -209,6 +289,71 @@ export const getPageBySlug = async (
     };
   } catch (e) {
     console.error("Error loading page by slug:", e);
+    return null;
+  }
+};
+
+export const getAllPosts = async (first = 20): Promise<BlogPostListItem[]> => {
+  try {
+    const { data } = await client.query<GetPostsListQuery, GetPostsListQueryVariables>({
+      query: GET_POSTS,
+      variables: { first },
+      fetchPolicy: "network-only",
+    });
+
+    const nodes = (data?.posts?.nodes ?? []).filter(
+      (post): post is NonNullable<typeof post> => Boolean(post)
+    );
+
+    return nodes.map((post) => ({
+      id: post.id,
+      slug: post.slug ?? "",
+      title: post.title ?? "",
+      excerpt: post.excerpt ?? "",
+      date: post.date ?? null,
+      featuredImage: post.featuredImage?.node?.sourceUrl
+        ? {
+            sourceUrl: post.featuredImage.node.sourceUrl,
+            altText: post.featuredImage.node.altText ?? null,
+          }
+        : undefined,
+    }));
+  } catch (e) {
+    console.error("Error loading posts:", e);
+    return [];
+  }
+};
+
+export const getPostBySlug = async (slug: string): Promise<BlogPostDetail | null> => {
+  try {
+    const { data } = await client.query<GetPostBySlugQuery, GetPostBySlugQueryVariables>({
+      query: GET_POST_BY_SLUG,
+      variables: { slug },
+      fetchPolicy: "network-only",
+    });
+
+    const post = data?.post;
+    if (!post) {
+      return null;
+    }
+
+    return {
+      id: post.id,
+      slug: post.slug ?? "",
+      title: post.title ?? "",
+      content: post.content ?? "",
+      excerpt: post.excerpt ?? "",
+      date: post.date ?? null,
+      seo: post.seo ?? null,
+      featuredImage: post.featuredImage?.node?.sourceUrl
+        ? {
+            sourceUrl: post.featuredImage.node.sourceUrl,
+            altText: post.featuredImage.node.altText ?? null,
+          }
+        : undefined,
+    };
+  } catch (e) {
+    console.error("Error loading post by slug:", e);
     return null;
   }
 };

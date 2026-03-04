@@ -1,13 +1,16 @@
 import ContactForm from "../ui/ContactForm";
 import Map from "../ui/Map";
 import ScrollText from "../ui/ScrollText";
+import useSEO from "../hooks/useSEO";
 
 export default function Contacto() {
+    useSEO(undefined, {
+        title: "Contacto",
+        description: "Consulta cualquier duda y contacta con Disorder Underground Shop.",
+    });
+
     return (
-        <div
-            className="min-h-screen px-4"
-            style={{ paddingTop: "var(--navbar-height, 80px)" }}
-        >
+        <div className="min-h-screen px-4 page-navbar-offset">
             <ScrollText
                 text="Contacto"
                 textSize={160}
