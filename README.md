@@ -1,73 +1,35 @@
-# React + TypeScript + Vite
+# Disorder Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend en Vite + React para Disorder Underground Shop, conectado con WordPress mediante GraphQL.
 
-Currently, two official plugins are available:
+## Variables de entorno
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Parte de `.env.example` y ajusta estos valores para desarrollo y despliegue:
 
-## React Compiler
+- `VITE_WORDPRESS_GRAPHQL_URL`: endpoint GraphQL de WordPress.
+- `VITE_SITE_URL`: dominio publico final del frontend.
+- `VITE_FRONTEND_URL`: URL local o alternativa del frontend.
+- `VITE_WHATSAPP_NUMBER`: numero para el boton flotante.
+- `VITE_WHATSAPP_MESSAGE`: mensaje por defecto para WhatsApp.
+- `VITE_CONTACT_EMAIL`: email de contacto mostrado en el footer.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Comandos
 
-## Expanding the ESLint configuration
+- `npm run dev`: levanta el entorno local.
+- `npm run generate:sitemap`: genera `public/sitemap.xml` y `public/robots.txt`.
+- `npm run build`: genera sitemap, compila TypeScript y construye Vite.
+- `npm run preview`: sirve la build localmente.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Preparacion de despliegue
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+El proyecto ya incluye:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- `sitemap.xml` y `robots.txt` generados automaticamente antes de cada build.
+- pagina HTML de mapa del sitio en `/mapa-del-sitio`.
+- boton flotante de WhatsApp configurable por entorno.
+- metadatos SEO ampliados con canonical, Open Graph y Twitter Cards.
+- division por rutas mediante `lazy()` para reducir la carga inicial.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Nota de build
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Si `npm run build` falla, revisa primero la generacion de tipos GraphQL y la configuracion de TypeScript del archivo generado `src/api/graphql/generated.ts`.

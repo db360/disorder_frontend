@@ -7,6 +7,9 @@ module.exports = {
       fontFamily: {
         'sans': ['Beatstreet', 'sans-serif']
       },
+      colors: {
+        'disorder-yellow': 'var(--color-disorder-yellow)'
+      }
     }
   }
 }

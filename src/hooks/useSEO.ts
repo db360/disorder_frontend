@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { buildAbsoluteUrl, siteName } from "../config/site";
 
 type SeoImage = {
   sourceUrl?: string | null;
@@ -48,16 +49,31 @@ export default function useSEO(seo: SeoData, fallback: FallbackSeo = {}) {
     }
 
     const description = seo?.metaDesc || fallback.description;
+    const canonicalUrl =
+      seo?.canonical ||
+      (typeof window !== "undefined"
+        ? buildAbsoluteUrl(window.location.pathname)
+        : undefined);
+
     upsertMeta("name", "description", description || undefined);
+    upsertMeta("name", "robots", "index,follow");
 
     upsertMeta("property", "og:title", seo?.opengraphTitle || title || undefined);
     upsertMeta("property", "og:description", seo?.opengraphDescription || description || undefined);
     upsertMeta("property", "og:image", seo?.opengraphImage?.sourceUrl || undefined);
+    upsertMeta("property", "og:url", canonicalUrl);
+    upsertMeta("property", "og:type", "website");
+    upsertMeta("property", "og:site_name", siteName);
 
     upsertMeta("name", "twitter:title", seo?.opengraphTitle || title || undefined);
     upsertMeta("name", "twitter:description", seo?.opengraphDescription || description || undefined);
     upsertMeta("name", "twitter:image", seo?.opengraphImage?.sourceUrl || undefined);
+    upsertMeta(
+      "name",
+      "twitter:card",
+      seo?.opengraphImage?.sourceUrl ? "summary_large_image" : "summary",
+    );
 
-    upsertLink("canonical", seo?.canonical || undefined);
+    upsertLink("canonical", canonicalUrl);
   }, [seo, fallback.title, fallback.description]);
 }

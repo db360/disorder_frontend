@@ -18,6 +18,8 @@ export type ParsedWordPressContent = {
   galleries: ParsedContentGallery[];
 };
 
+import { normalizeWordPressSrcSet, normalizeWordPressUrl } from "./normalizeWordPressUrl";
+
 const extractImageId = (img: HTMLImageElement, index: number): string => {
   const classMatch = img.className.match(/wp-image-(\d+)/i);
   if (classMatch?.[1]) {
@@ -47,11 +49,11 @@ export const parseWordPressContent = (html?: string | null): ParsedWordPressCont
     img: HTMLImageElement,
     index: number,
   ): ParsedContentImage | null => {
-      const src = img.getAttribute("src")?.trim() ?? "";
+      const src = normalizeWordPressUrl(img.getAttribute("src")?.trim() ?? "");
       if (!src) return null;
 
       const alt = img.getAttribute("alt")?.trim() ?? "";
-      const srcSet = img.getAttribute("srcset")?.trim() || undefined;
+      const srcSet = normalizeWordPressSrcSet(img.getAttribute("srcset")?.trim() || undefined);
       const sizes = img.getAttribute("sizes")?.trim() || undefined;
 
       return {

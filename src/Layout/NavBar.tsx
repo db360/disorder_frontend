@@ -4,7 +4,8 @@ import usePages from "../hooks/usePages";
 import ThemeToggle from "../ui/ThemeToggle";
 import { useEffect, useMemo, useRef, useState } from "react";
 import HamburgerMenu from "../ui/HamburgerMenu";
-
+import logoVideoMp4 from "../assets/videos/logo-navbar.mp4";
+import logoVideoWebm from "../assets/videos/logo-navbar.webm";
 
 export default function NavBar() {
   const { pages, loading, error } = usePages();
@@ -15,11 +16,13 @@ export default function NavBar() {
   const headerRef = useRef<HTMLElement | null>(null);
   const { scrollY } = useScroll();
   const logoSrc = "/img/logo-navbar.svg";
-  const logoVideoSrc = "/videos/logo-navbar.mp4";
   const logoAlt = "Logo NavBar Disorder Underground Shop";
   const menuItems = useMemo(() => {
     const wpItems = pages
-      .filter((page) => page.slug !== "inicio")
+      .filter(
+        (page) =>
+          page.slug !== "inicio" && page.slug !== "declaracion-accesibilidad",
+      )
       .slice()
       .sort((a, b) => (a.menuOrder ?? 0) - (b.menuOrder ?? 0));
 
@@ -110,10 +113,9 @@ export default function NavBar() {
       transition={{ duration: 0.2, ease: "easeOut" }}
       style={{ pointerEvents: hidden ? "none" : "auto" }}
     >
-
       <motion.nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between font-beatstreet">
         {/* Left: Logo (20%) */}
-        <div className="basis-1/5 flex items-center justify-start">
+        <div className="basis-1/5 flex items-center justify-start cursor-pointer">
           <Link to="/" className="flex items-center" aria-label={logoAlt}>
             {!videoFailed ? (
               <span className="navbar-logo-video-mask" aria-hidden="true">
@@ -126,14 +128,15 @@ export default function NavBar() {
                   preload="metadata"
                   onError={() => setVideoFailed(true)}
                 >
-                  <source src={logoVideoSrc} type="video/webm" />
+                  <source src={logoVideoWebm} type="video/webm" />
+                  <source src={logoVideoMp4} type="video/mp4" />
                 </video>
               </span>
             ) : (
               <img
                 src={logoSrc}
                 alt={logoAlt}
-                className="h-12 w-auto"
+                className="navbar-logo-image"
                 loading="eager"
                 decoding="async"
               />
@@ -148,7 +151,9 @@ export default function NavBar() {
             </span>
           )}
           {!error && loading && (
-            <span className="text-primary-700 dark:text-primary-300 text-base">Cargando...</span>
+            <span className="text-primary-700 dark:text-primary-300 text-base">
+              Cargando...
+            </span>
           )}
           {!error && !loading && (
             <motion.ul
@@ -158,19 +163,19 @@ export default function NavBar() {
               animate="visible"
             >
               {menuItems.map((page) => (
-                  <motion.li
-                    key={page.id}
-                    className="flex items-center"
-                    variants={itemVariants}
+                <motion.li
+                  key={page.id}
+                  className="flex items-center"
+                  variants={itemVariants}
+                >
+                  <Link
+                    to={`/${page.slug}`}
+                    className="text-primary-900 dark:text-primary-100 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
                   >
-                    <Link
-                      to={`/${page.slug}`}
-                      className="text-primary-900 dark:text-primary-100 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
-                    >
-                      {page.title}
-                    </Link>
-                  </motion.li>
-                ))}
+                    {page.title}
+                  </Link>
+                </motion.li>
+              ))}
             </motion.ul>
           )}
         </div>

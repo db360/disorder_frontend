@@ -14,6 +14,12 @@ type SwipeCarouselProps = {
   className?: string;
   autoDelayMs?: number;
   dots?: boolean;
+  onIndexChange?: (index: number) => void;
+  activeIndex?: number;
+  slideClassName?: string;
+  imageClassName?: string;
+  activeScale?: number;
+  inactiveScale?: number;
 };
 
 const ONE_SECOND = 1000;
@@ -28,18 +34,41 @@ const SPRING_OPTIONS = {
 };
 
 export default function SwipeCarousel({
-    dots = true,
+  dots = true,
   images,
   className,
   autoDelayMs = AUTO_DELAY,
+  onIndexChange,
+  activeIndex,
+  slideClassName,
+  imageClassName,
+  activeScale = 0.95,
+  inactiveScale = 0.85,
 }: SwipeCarouselProps) {
   const carouselImages = useMemo(
     () => (images ?? []).filter((image) => Boolean(image?.src)),
     [images],
   );
   const [imgIndex, setImgIndex] = useState(0);
+  const isControlled = typeof activeIndex === "number";
   const maxIndex = Math.max(carouselImages.length - 1, 0);
-  const currentIndex = Math.min(imgIndex, maxIndex);
+  const currentIndex = Math.min(isControlled ? activeIndex : imgIndex, maxIndex);
+
+  const updateIndex = (nextIndex: number) => {
+    const boundedIndex = Math.max(0, Math.min(nextIndex, maxIndex));
+
+    if (!isControlled) {
+      setImgIndex(boundedIndex);
+    }
+
+    onIndexChange?.(boundedIndex);
+  };
+
+  useEffect(() => {
+    if (!isControlled) {
+      onIndexChange?.(currentIndex);
+    }
+  }, [currentIndex, isControlled, onIndexChange]);
 
   useEffect(() => {
     if (carouselImages.length <= 1) {
@@ -47,24 +76,19 @@ export default function SwipeCarousel({
     }
 
     const intervalRef = setInterval(() => {
-      setImgIndex((pv) => {
-        if (pv >= carouselImages.length - 1) {
-          return 0;
-        }
-        return pv + 1;
-      });
+      updateIndex(currentIndex >= carouselImages.length - 1 ? 0 : currentIndex + 1);
     }, autoDelayMs);
 
     return () => clearInterval(intervalRef);
-  }, [autoDelayMs, carouselImages.length]);
+  }, [autoDelayMs, carouselImages.length, currentIndex]);
 
   const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const x = info.offset.x;
 
     if (x <= -DRAG_BUFFER && currentIndex < carouselImages.length - 1) {
-      setImgIndex((pv) => pv + 1);
+      updateIndex(currentIndex + 1);
     } else if (x >= DRAG_BUFFER && currentIndex > 0) {
-      setImgIndex((pv) => pv - 1);
+      updateIndex(currentIndex - 1);
     }
   };
 
@@ -87,9 +111,22 @@ export default function SwipeCarousel({
         onDragEnd={onDragEnd}
         className="flex cursor-grab items-center active:cursor-grabbing"
       >
-        <Images images={carouselImages} imgIndex={currentIndex} />
+        <Images
+          images={carouselImages}
+          imgIndex={currentIndex}
+          slideClassName={slideClassName}
+          imageClassName={imageClassName}
+          activeScale={activeScale}
+          inactiveScale={inactiveScale}
+        />
       </motion.div>
-        {dots && <Dots images={carouselImages} imgIndex={currentIndex} setImgIndex={setImgIndex} />}
+      {dots && (
+        <Dots
+          images={carouselImages}
+          imgIndex={currentIndex}
+          setImgIndex={updateIndex}
+        />
+      )}
     </div>
   );
 }
@@ -97,9 +134,20 @@ export default function SwipeCarousel({
 type ImagesProps = {
   images: CarouselImage[];
   imgIndex: number;
+  slideClassName?: string;
+  imageClassName?: string;
+  activeScale: number;
+  inactiveScale: number;
 };
 
-function Images({ images, imgIndex }: ImagesProps) {
+function Images({
+  images,
+  imgIndex,
+  slideClassName,
+  imageClassName,
+  activeScale,
+  inactiveScale,
+}: ImagesProps) {
   return (
     <>
       {images.map((image, idx) => {
@@ -107,17 +155,17 @@ function Images({ images, imgIndex }: ImagesProps) {
           <motion.div
             key={image.id}
             animate={{
-              scale: imgIndex === idx ? 0.95 : 0.85,
+              scale: imgIndex === idx ? activeScale : inactiveScale,
             }}
             transition={SPRING_OPTIONS}
-            className="aspect-video w-full min-w-full shrink-0 rounded-xl"
+            className={`aspect-video w-full min-w-full shrink-0 rounded-xl ${slideClassName ?? ""}`}
           >
             <img
               src={image.src}
               srcSet={image.srcSet}
               sizes={image.sizes}
               alt={image.title ?? "Imagen"}
-              className="h-full w-full rounded-xl object-cover shadow-2xl"
+              className={`h-full w-full rounded-xl object-cover shadow-2xl ${imageClassName ?? ""}`}
               loading="lazy"
               decoding="async"
             />
@@ -131,7 +179,7 @@ function Images({ images, imgIndex }: ImagesProps) {
 type DotsProps = {
   images: CarouselImage[];
   imgIndex: number;
-  setImgIndex: React.Dispatch<React.SetStateAction<number>>;
+  setImgIndex: (index: number) => void;
 };
 
 function Dots({ images, imgIndex, setImgIndex }: DotsProps) {

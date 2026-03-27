@@ -1,38 +1,35 @@
-import Contacto from "./pages/Contacto";
-import Equipo from "./pages/Equipo";
-import Error from "./pages/Error";
-import Gallery from "./pages/Gallery";
-import Historia from "./pages/Historia";
-import Index from "./pages/Index";
-import StillBurning from "./pages/StillBurning";
+import { Suspense, lazy } from "react";
+import type { ReactElement } from "react";
 import LoadingSpinner from "./ui/LoadingSpinner";
 
-const Page = ({ slug, loading }: { slug: string, loading: boolean }) => {
+const Contacto = lazy(() => import("./pages/Contacto"));
+const DeclaracionAccesibilidad = lazy(
+  () => import("./pages/DeclaracionAccesibilidad"),
+);
+const Equipo = lazy(() => import("./pages/Equipo"));
+const Error = lazy(() => import("./pages/Error"));
+const Gallery = lazy(() => import("./pages/Gallery"));
+const Historia = lazy(() => import("./pages/Historia"));
+const Index = lazy(() => import("./pages/Index"));
+const StillBurning = lazy(() => import("./pages/StillBurning"));
 
+const SLUG_COMPONENTS: Record<string, ReactElement> = {
+  inicio: <Index />,
+  contacto: <Contacto />,
+  estudio: <Historia />,
+  galeria: <Gallery />,
+  "nuestro-equipo": <Equipo />,
+  "still-burning": <StillBurning />,
+  "declaracion-accesibilidad": <DeclaracionAccesibilidad />,
+};
+
+const Page = ({ slug, loading }: { slug: string; loading: boolean }) => {
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  if (slug === "inicio") {
-    return <Index />;
-  }
-  if (slug === "contacto") {
-    return <Contacto />;
-  }
-  if( slug === "estudio"){
-    return <Historia />;
-  }
-  if( slug === "galeria"){
-    return <Gallery />;
-  }
-  if( slug === "nuestro-equipo"){
-    return <Equipo />;
-  }
-  if( slug === "still-burning"){
-    return <StillBurning />;
-  }
-  // ...otros casos
-  return <Error />;
+  const content = SLUG_COMPONENTS[slug] ?? <Error />;
+  return <Suspense fallback={<LoadingSpinner />}>{content}</Suspense>;
 };
 
 export default Page;

@@ -1,8 +1,6 @@
 import client from "../api/graphql/client";
 import {
-  GetAllPageSlugsDocument,
   GetAllPagesDocument,
-  type GetAllPageSlugsQuery,
   type GetAllPagesQuery,
   type GetPageBySlugQuery,
   type GetPageBySlugQueryVariables,
@@ -18,8 +16,9 @@ import {
   GET_POSTS,
   GET_POST_BY_SLUG,
 } from "../api/graphql/queries";
+import { normalizeWordPressUrl } from "./normalizeWordPressUrl";
 
-import type { WordPressPage, WPMenuItem, Galeria } from "../types/wordpress";
+import type { WordPressPage, Galeria } from "../types/wordpress";
 
 type MediaItemForSrcSet = {
   databaseId: number;
@@ -135,13 +134,13 @@ const buildSrcSetFromMediaItem = (mediaItem: MediaItemForSrcSet): string => {
     .filter((size): size is NonNullable<typeof size> => Boolean(size))
     .map((size) => {
       if (!size.sourceUrl || !size.width) return null;
-      return `${size.sourceUrl} ${size.width}w`;
+      return `${normalizeWordPressUrl(size.sourceUrl)} ${size.width}w`;
     })
     .filter((value): value is string => Boolean(value));
 
   const originalWidth = mediaItem.mediaDetails?.width;
   if (mediaItem.sourceUrl && originalWidth) {
-    normalizedSizes.push(`${mediaItem.sourceUrl} ${originalWidth}w`);
+    normalizedSizes.push(`${normalizeWordPressUrl(mediaItem.sourceUrl)} ${originalWidth}w`);
   }
 
   return [...new Set(normalizedSizes)].join(", ");
@@ -210,30 +209,6 @@ const getMediaItemsByIds = async (ids: number[]): Promise<Map<number, MediaItemF
   }
 };
 
-// Obtiene solo slugs, id y títulos de las páginas publicadas
-export const getPagesSlugs = async (): Promise<Pick<WPMenuItem, "id" | "slug" | "title" | "menuOrder">[]> => {
-  try {
-    const { data } = await client.query<GetAllPageSlugsQuery>(
-      {
-        query: GetAllPageSlugsDocument,
-        fetchPolicy: "cache-first",
-      }
-    );
-    const nodes = data?.pages?.nodes || [];
-    return nodes
-      .filter((node) => node.slug && node.title)
-      .map((node) => ({
-        id: node.id,
-        slug: node.slug ?? "",
-        title: node.title ?? "",
-        menuOrder: node.menuOrder ?? null,
-      }));
-  } catch (e) {
-    console.error("Error loading page slugs/titles:", e);
-    return [];
-  }
-};
-
 // Obtiene todas las páginas con información completa
 export const getAllPages = async (): Promise<WordPressPage[]> => {
   try {
@@ -298,7 +273,7 @@ export const getAllPosts = async (first = 20): Promise<BlogPostListItem[]> => {
     const { data } = await client.query<GetPostsListQuery, GetPostsListQueryVariables>({
       query: GET_POSTS,
       variables: { first },
-      fetchPolicy: "network-only",
+      fetchPolicy: "cache-first",
     });
 
     const nodes = (data?.posts?.nodes ?? []).filter(
@@ -313,7 +288,7 @@ export const getAllPosts = async (first = 20): Promise<BlogPostListItem[]> => {
       date: post.date ?? null,
       featuredImage: post.featuredImage?.node?.sourceUrl
         ? {
-            sourceUrl: post.featuredImage.node.sourceUrl,
+            sourceUrl: normalizeWordPressUrl(post.featuredImage.node.sourceUrl),
             altText: post.featuredImage.node.altText ?? null,
           }
         : undefined,
@@ -329,7 +304,7 @@ export const getPostBySlug = async (slug: string): Promise<BlogPostDetail | null
     const { data } = await client.query<GetPostBySlugQuery, GetPostBySlugQueryVariables>({
       query: GET_POST_BY_SLUG,
       variables: { slug },
-      fetchPolicy: "network-only",
+      fetchPolicy: "cache-first",
     });
 
     const post = data?.post;
@@ -347,7 +322,7 @@ export const getPostBySlug = async (slug: string): Promise<BlogPostDetail | null
       seo: post.seo ?? null,
       featuredImage: post.featuredImage?.node?.sourceUrl
         ? {
-            sourceUrl: post.featuredImage.node.sourceUrl,
+            sourceUrl: normalizeWordPressUrl(post.featuredImage.node.sourceUrl),
             altText: post.featuredImage.node.altText ?? null,
           }
         : undefined,
@@ -377,8 +352,8 @@ export const getAllGalerias = async (): Promise<Galeria[]> => {
       galeriaImagenes: node.galeriaImagenes
         ?.filter((img): img is NonNullable<typeof img> => Boolean(img))
         .map((img) => ({
-          sourceUrl: img.sourceUrl ?? "",
-          mediaItemUrl: img.mediaItemUrl ?? undefined,
+          sourceUrl: normalizeWordPressUrl(img.sourceUrl ?? ""),
+          mediaItemUrl: normalizeWordPressUrl(img.mediaItemUrl ?? undefined),
           altText: img.altText ?? null,
           mediaDetails: img.mediaDetails
             ? {
@@ -388,7 +363,7 @@ export const getAllGalerias = async (): Promise<Galeria[]> => {
                   ?.filter((size): size is NonNullable<typeof size> => Boolean(size))
                   .map((size) => ({
                     name: size.name ?? "",
-                    sourceUrl: size.sourceUrl ?? "",
+                    sourceUrl: normalizeWordPressUrl(size.sourceUrl ?? ""),
                     width: size.width ?? 0,
                     height: size.height ?? 0,
                   })),
@@ -420,8 +395,8 @@ export const getGaleriaBySlug = async (slug: string): Promise<Galeria | null> =>
       galeriaImagenes: data.galeria.galeriaImagenes
         ?.filter((img): img is NonNullable<typeof img> => Boolean(img))
         .map((img) => ({
-          sourceUrl: img.sourceUrl ?? "",
-          mediaItemUrl: img.mediaItemUrl ?? undefined,
+          sourceUrl: normalizeWordPressUrl(img.sourceUrl ?? ""),
+          mediaItemUrl: normalizeWordPressUrl(img.mediaItemUrl ?? undefined),
           altText: img.altText ?? null,
           mediaDetails: img.mediaDetails
             ? {
@@ -431,7 +406,7 @@ export const getGaleriaBySlug = async (slug: string): Promise<Galeria | null> =>
                   ?.filter((size): size is NonNullable<typeof size> => Boolean(size))
                   .map((size) => ({
                     name: size.name ?? "",
-                    sourceUrl: size.sourceUrl ?? "",
+                    sourceUrl: normalizeWordPressUrl(size.sourceUrl ?? ""),
                     width: size.width ?? 0,
                     height: size.height ?? 0,
                   })),

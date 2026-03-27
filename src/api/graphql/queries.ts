@@ -18,6 +18,13 @@ const MEDIA_FIELDS = gql`
   }
 `;
 
+const MEDIA_BASIC_FIELDS = gql`
+  fragment MediaBasicFields on MediaItem {
+    sourceUrl
+    altText
+  }
+`;
+
 const PAGE_LIST_FIELDS = gql`
   fragment PageListFields on Page {
     id
@@ -47,11 +54,11 @@ const PAGE_FULL_FIELDS = gql`
     }
     featuredImage {
       node {
-        ...MediaFields
+        ...MediaBasicFields
       }
     }
   }
-  ${MEDIA_FIELDS}
+  ${MEDIA_BASIC_FIELDS}
 `;
 
 const GALERIA_FIELDS = gql`
@@ -120,13 +127,13 @@ export const GET_POSTS = gql`
         date
         featuredImage {
           node {
-            ...MediaFields
+            ...MediaBasicFields
           }
         }
       }
     }
   }
-  ${MEDIA_FIELDS}
+  ${MEDIA_BASIC_FIELDS}
 `;
 
 
@@ -192,10 +199,10 @@ export const GET_POST_BY_SLUG = gql`
       }
       featuredImage {
         node {
-          ...MediaFields
+          ...MediaBasicFields
         }
       }
     }
   }
-  ${MEDIA_FIELDS}
+  ${MEDIA_BASIC_FIELDS}
 `;

@@ -6,6 +6,7 @@ import type { Galeria } from "../types/wordpress";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import SwipeCarousel from "../ui/Carousel";
 import useSEO from "../hooks/useSEO";
+import { normalizeWordPressUrl } from "../lib/normalizeWordPressUrl";
 
 export default function Equipo() {
     const [page, setPage] = useState<GetPageBySlugQuery["page"] | null>(null);
@@ -122,12 +123,31 @@ export default function Equipo() {
                         key={artist.name}
                         className="max-w-5xl mx-auto rounded-xl border border-primary-300/30 dark:border-primary-200/20 p-6 sm:p-8"
                     >
-                        <h2 className="text-3xl font-bold text-primary-600 dark:text-white">{artist.name}</h2>
+                        <h2 className="text-3xl font-bold text-primary-100 dark:text-white">{artist.name}</h2>
 
-                        {artist.description && (
-                            <p className="mt-4 whitespace-pre-line text-primary-500 dark:text-primary-100">
-                                {artist.description}
-                            </p>
+                        {artist.leadTitleHtml && (
+                            <div
+                                className="mt-4 text-2xl font-bold leading-tight dark:text-primary-400 sm:text-3xl"
+                                dangerouslySetInnerHTML={{ __html: artist.leadTitleHtml }}
+                            />
+                        )}
+
+                        {artist.leadImage && (
+                            <div className="mt-6 overflow-hidden rounded-2xl border border-primary-300/30 dark:border-primary-200/20">
+                                <img
+                                    src={normalizeWordPressUrl(artist.leadImage.src)}
+                                    alt={artist.leadImage.alt || artist.name}
+                                    className="w-2/3 h-80 mx-auto object-contain"
+                                    loading="lazy"
+                                />
+                            </div>
+                        )}
+
+                        {artist.descriptionHtml && (
+                            <div
+                                className="wp-content mt-6"
+                                dangerouslySetInnerHTML={{ __html: artist.descriptionHtml }}
+                            />
                         )}
 
                         {images.length > 0 && (

@@ -71,7 +71,7 @@ function FlipLink({ children, href }: FlipLinkProps) {
 
 export default function RevealLinks() {
   return (
-    <section className="grid place-content-center gap-2 px-8 py-48 text-primary-100 -translate-x-4">
+    <section className="grid h-full min-h-75 place-content-center gap-2 px-8 py-10 text-primary-100 text-center xl:py-20">
       <FlipLink href="https://share.google/FgykKKxEn3jMGE370">Google</FlipLink>
       <FlipLink href="https://www.linkedin.com">LinkedIn</FlipLink>
       <FlipLink href="https://www.facebook.com">Facebook</FlipLink>

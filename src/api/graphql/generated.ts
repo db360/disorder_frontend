@@ -43,16 +43,15 @@ export type Avatar = {
 };
 
 /** Content rating filter for user avatars. Determines the maximum maturity level of avatars to display, following standard content rating classifications (G, PG, R, X). */
-export enum AvatarRatingEnum {
+export type AvatarRatingEnum =
   /** Indicates a G level avatar rating level. */
-  G = 'G',
+  | 'G'
   /** Indicates a PG level avatar rating level. */
-  Pg = 'PG',
+  | 'PG'
   /** Indicates an R level avatar rating level. */
-  R = 'R',
+  | 'R'
   /** Indicates an X level avatar rating level. */
-  X = 'X'
-}
+  | 'X';
 
 /** A taxonomy term that classifies content. Categories support hierarchy and can be used to create a nested structure. */
 export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermNode & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & {
@@ -210,18 +209,17 @@ export type CategoryConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific Category. Determines which unique property (global ID, database ID, slug, etc.) is used to locate the Category. */
-export enum CategoryIdType {
+export type CategoryIdType =
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Connection between the Category type and the category type */
 export type CategoryToAncestorsCategoryConnection = CategoryConnection & Connection & {
@@ -679,24 +677,22 @@ export type CommentConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific comment. Specifies which unique attribute is used to find a particular comment. */
-export enum CommentNodeIdTypeEnum {
+export type CommentNodeIdTypeEnum =
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID'
-}
+  | 'ID';
 
 /** Moderation state for user comments. Determines whether comments are publicly visible, pending approval, or marked as spam. */
-export enum CommentStatusEnum {
+export type CommentStatusEnum =
   /** Comments with the Aprobado status */
-  Approve = 'APPROVE',
+  | 'APPROVE'
   /** Comments with the Rechazado status */
-  Hold = 'HOLD',
+  | 'HOLD'
   /** Comments with the Spam status */
-  Spam = 'SPAM',
+  | 'SPAM'
   /** Comments with the Papelera status */
-  Trash = 'TRASH'
-}
+  | 'TRASH';
 
 /** Connection between the Comment type and the Comment type */
 export type CommentToCommentConnection = CommentConnection & Connection & {
@@ -919,40 +915,39 @@ export type CommenterConnectionEdge = {
 };
 
 /** Sorting attributes for comment collections. Specifies which comment property determines the order of results. */
-export enum CommentsConnectionOrderbyEnum {
+export type CommentsConnectionOrderbyEnum =
   /** Order by browser user agent of the commenter. */
-  CommentAgent = 'COMMENT_AGENT',
+  | 'COMMENT_AGENT'
   /** Order by approval status of the comment. */
-  CommentApproved = 'COMMENT_APPROVED',
+  | 'COMMENT_APPROVED'
   /** Order by name of the comment author. */
-  CommentAuthor = 'COMMENT_AUTHOR',
+  | 'COMMENT_AUTHOR'
   /** Order by e-mail of the comment author. */
-  CommentAuthorEmail = 'COMMENT_AUTHOR_EMAIL',
+  | 'COMMENT_AUTHOR_EMAIL'
   /** Order by IP address of the comment author. */
-  CommentAuthorIp = 'COMMENT_AUTHOR_IP',
+  | 'COMMENT_AUTHOR_IP'
   /** Order by URL address of the comment author. */
-  CommentAuthorUrl = 'COMMENT_AUTHOR_URL',
+  | 'COMMENT_AUTHOR_URL'
   /** Order by the comment contents. */
-  CommentContent = 'COMMENT_CONTENT',
+  | 'COMMENT_CONTENT'
   /** Chronological ordering by comment submission date. */
-  CommentDate = 'COMMENT_DATE',
+  | 'COMMENT_DATE'
   /** Chronological ordering by comment date in UTC/GMT time. */
-  CommentDateGmt = 'COMMENT_DATE_GMT',
+  | 'COMMENT_DATE_GMT'
   /** Ordering by internal ID (typically reflects creation order). */
-  CommentId = 'COMMENT_ID',
+  | 'COMMENT_ID'
   /** Preserve custom order of IDs as specified in the query. */
-  CommentIn = 'COMMENT_IN',
+  | 'COMMENT_IN'
   /** Order by the comment karma score. */
-  CommentKarma = 'COMMENT_KARMA',
+  | 'COMMENT_KARMA'
   /** Ordering by parent comment relationship (threaded discussions). */
-  CommentParent = 'COMMENT_PARENT',
+  | 'COMMENT_PARENT'
   /** Ordering by associated content item ID. */
-  CommentPostId = 'COMMENT_POST_ID',
+  | 'COMMENT_POST_ID'
   /** Ordering by comment classification (standard comments, pingbacks, etc.). */
-  CommentType = 'COMMENT_TYPE',
+  | 'COMMENT_TYPE'
   /** Ordering by the user account ID associated with the comment as the comment author. */
-  UserId = 'USER_ID'
-}
+  | 'USER_ID';
 
 /** A paginated relationship between objects. Supports cursor-based pagination with edges containing relationship metadata and nodes containing the related objects. */
 export type Connection = {
@@ -1079,14 +1074,13 @@ export type ContentNodeConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving specific content. Determines which property (global ID, database ID, URI) is used to locate content objects. */
-export enum ContentNodeIdTypeEnum {
+export type ContentNodeIdTypeEnum =
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Connection between the ContentNode type and the ContentType type */
 export type ContentNodeToContentTypeConnectionEdge = ContentTypeConnectionEdge & Edge & OneToOneConnection & {
@@ -1316,26 +1310,24 @@ export type ContentTypeConnectionPageInfo = {
 };
 
 /** Available content entity types that can be queried or filtered. Identifies the primary content structures available in the system. */
-export enum ContentTypeEnum {
+export type ContentTypeEnum =
   /** The Type of Content object */
-  Attachment = 'ATTACHMENT',
+  | 'ATTACHMENT'
   /** The Type of Content object */
-  Galeria = 'GALERIA',
+  | 'GALERIA'
   /** The Type of Content object */
-  GraphqlDocument = 'GRAPHQL_DOCUMENT',
+  | 'GRAPHQL_DOCUMENT'
   /** The Type of Content object */
-  Page = 'PAGE',
+  | 'PAGE'
   /** The Type of Content object */
-  Post = 'POST'
-}
+  | 'POST';
 
 /** Identifier types for retrieving a specific content type definition. Determines whether to look up content types by ID or name. */
-export enum ContentTypeIdTypeEnum {
+export type ContentTypeIdTypeEnum =
   /** The globally unique ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the content type. */
-  Name = 'NAME'
-}
+  | 'NAME';
 
 /** Connection between the ContentType type and the ContentNode type */
 export type ContentTypeToContentNodeConnection = Connection & ContentNodeConnection & {
@@ -1448,28 +1440,24 @@ export type ContentTypeToTaxonomyConnectionPageInfo = PageInfo & TaxonomyConnect
 };
 
 /** Allowed Content Types of the Category taxonomy. */
-export enum ContentTypesOfCategoryEnum {
+export type ContentTypesOfCategoryEnum =
   /** The Type of Content object */
-  Post = 'POST'
-}
+  | 'POST';
 
 /** Allowed Content Types of the GraphqlDocumentGroup taxonomy. */
-export enum ContentTypesOfGraphqlDocumentGroupEnum {
+export type ContentTypesOfGraphqlDocumentGroupEnum =
   /** The Type of Content object */
-  GraphqlDocument = 'GRAPHQL_DOCUMENT'
-}
+  | 'GRAPHQL_DOCUMENT';
 
 /** Allowed Content Types of the PostFormat taxonomy. */
-export enum ContentTypesOfPostFormatEnum {
+export type ContentTypesOfPostFormatEnum =
   /** The Type of Content object */
-  Post = 'POST'
-}
+  | 'POST';
 
 /** Allowed Content Types of the Tag taxonomy. */
-export enum ContentTypesOfTagEnum {
+export type ContentTypesOfTagEnum =
   /** The Type of Content object */
-  Post = 'POST'
-}
+  | 'POST';
 
 /** Input for the createCategory mutation. */
 export type CreateCategoryInput = {
@@ -2497,16 +2485,15 @@ export type GaleriaConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific Galeria. Specifies which unique attribute is used to find an exact Galeria. */
-export enum GaleriaIdType {
+export type GaleriaIdType =
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Connection between the Galeria type and the Galeria type */
 export type GaleriaToGaleriaConnection = Connection & GaleriaConnection & {
@@ -2955,18 +2942,17 @@ export type GraphqlDocumentGroupConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific GraphqlDocumentGroup. Determines which unique property (global ID, database ID, slug, etc.) is used to locate the GraphqlDocumentGroup. */
-export enum GraphqlDocumentGroupIdType {
+export type GraphqlDocumentGroupIdType =
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Connection between the GraphqlDocumentGroup type and the ContentNode type */
 export type GraphqlDocumentGroupToContentNodeConnection = Connection & ContentNodeConnection & {
@@ -3126,16 +3112,15 @@ export type GraphqlDocumentGroupToTaxonomyConnectionEdge = Edge & OneToOneConnec
 };
 
 /** Identifier types for retrieving a specific GraphqlDocument. Specifies which unique attribute is used to find an exact GraphqlDocument. */
-export enum GraphqlDocumentIdType {
+export type GraphqlDocumentIdType =
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Connection between the graphqlDocument type and the graphqlDocument type */
 export type GraphqlDocumentToGraphqlDocumentConnection = Connection & GraphqlDocumentConnection & {
@@ -3994,18 +3979,17 @@ export type MediaItemConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific MediaItem. Specifies which unique attribute is used to find an exact MediaItem. */
-export enum MediaItemIdType {
+export type MediaItemIdType =
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Identify a media item by its source url */
-  SourceUrl = 'SOURCE_URL',
+  | 'SOURCE_URL'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Meta connected to a MediaItem */
 export type MediaItemMeta = {
@@ -4037,32 +4021,30 @@ export type MediaItemMeta = {
 };
 
 /** Predefined image size variations. Represents the standard image dimensions available for media assets. */
-export enum MediaItemSizeEnum {
+export type MediaItemSizeEnum =
   /** Large image preview suitable for detail views. (1024x1024) */
-  Large = 'LARGE',
+  | 'LARGE'
   /** Medium image preview typically suitable for listings and detail views. (300x300) */
-  Medium = 'MEDIUM',
+  | 'MEDIUM'
   /** Medium-to-large image preview suitable for listings and detail views. (768x0) */
-  MediumLarge = 'MEDIUM_LARGE',
+  | 'MEDIUM_LARGE'
   /** Small image preview suitable for thumbnails and listings. (150x150) */
-  Thumbnail = 'THUMBNAIL',
+  | 'THUMBNAIL'
   /** Custom Image Size. (1536x1536) */
-  '1536X1536' = '_1536X1536',
+  | '_1536X1536'
   /** Custom Image Size. (2048x2048) */
-  '2048X2048' = '_2048X2048'
-}
+  | '_2048X2048';
 
 /** Publication status for media items. Controls whether media is publicly accessible, private, or in another state. */
-export enum MediaItemStatusEnum {
+export type MediaItemStatusEnum =
   /** Automatically created media that has not been finalized */
-  AutoDraft = 'AUTO_DRAFT',
+  | 'AUTO_DRAFT'
   /** Media that inherits its publication status from the parent content */
-  Inherit = 'INHERIT',
+  | 'INHERIT'
   /** Media visible only to users with appropriate permissions */
-  Private = 'PRIVATE',
+  | 'PRIVATE'
   /** Media marked for deletion but still recoverable */
-  Trash = 'TRASH'
-}
+  | 'TRASH';
 
 /** Connection between the MediaItem type and the Comment type */
 export type MediaItemToCommentConnection = CommentConnection & Connection & {
@@ -4374,12 +4356,11 @@ export type MenuItemLinkableConnectionEdge = {
 };
 
 /** Identifier types for retrieving a specific menu item. Determines whether to look up menu items by global ID or database ID. */
-export enum MenuItemNodeIdTypeEnum {
+export type MenuItemNodeIdTypeEnum =
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID'
-}
+  | 'ID';
 
 /** Deprecated in favor of MenuItemLinkable Interface */
 export type MenuItemObjectUnion = Category | Galeria | Page | Post | PostFormat | Tag;
@@ -4450,24 +4431,22 @@ export type MenuItemToMenuItemLinkableConnectionEdge = Edge & MenuItemLinkableCo
 };
 
 /** Designated areas where navigation menus can be displayed. Represents the named regions in the interface where menus can be assigned. */
-export enum MenuLocationEnum {
+export type MenuLocationEnum =
   /** Empty menu location */
-  Empty = 'EMPTY'
-}
+  | 'EMPTY';
 
 /** Identifier types for retrieving a specific navigation menu. Specifies which property (ID, name, location) is used to locate a particular menu. */
-export enum MenuNodeIdTypeEnum {
+export type MenuNodeIdTypeEnum =
   /** Identify a menu node by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a menu node by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a menu node by the slug of menu location to which it is assigned */
-  Location = 'LOCATION',
+  | 'LOCATION'
   /** Identify a menu node by its name */
-  Name = 'NAME',
+  | 'NAME'
   /** Identify a menu node by its slug */
-  Slug = 'SLUG'
-}
+  | 'SLUG';
 
 /** Connection between the Menu type and the MenuItem type */
 export type MenuToMenuItemConnection = Connection & MenuItemConnection & {
@@ -4517,198 +4496,197 @@ export type MenuToMenuItemConnectionWhereArgs = {
 };
 
 /** Media file type classification based on MIME standards. Used to identify and filter media items by their format and content type. */
-export enum MimeTypeEnum {
+export type MimeTypeEnum =
   /** application/java mime type. */
-  ApplicationJava = 'APPLICATION_JAVA',
+  | 'APPLICATION_JAVA'
   /** application/javascript mime type. */
-  ApplicationJavascript = 'APPLICATION_JAVASCRIPT',
+  | 'APPLICATION_JAVASCRIPT'
   /** application/msword mime type. */
-  ApplicationMsword = 'APPLICATION_MSWORD',
+  | 'APPLICATION_MSWORD'
   /** application/octet-stream mime type. */
-  ApplicationOctetStream = 'APPLICATION_OCTET_STREAM',
+  | 'APPLICATION_OCTET_STREAM'
   /** application/onenote mime type. */
-  ApplicationOnenote = 'APPLICATION_ONENOTE',
+  | 'APPLICATION_ONENOTE'
   /** application/oxps mime type. */
-  ApplicationOxps = 'APPLICATION_OXPS',
+  | 'APPLICATION_OXPS'
   /** application/pdf mime type. */
-  ApplicationPdf = 'APPLICATION_PDF',
+  | 'APPLICATION_PDF'
   /** application/rar mime type. */
-  ApplicationRar = 'APPLICATION_RAR',
+  | 'APPLICATION_RAR'
   /** application/rtf mime type. */
-  ApplicationRtf = 'APPLICATION_RTF',
+  | 'APPLICATION_RTF'
   /** application/ttaf+xml mime type. */
-  ApplicationTtafXml = 'APPLICATION_TTAF_XML',
+  | 'APPLICATION_TTAF_XML'
   /** application/vnd.apple.keynote mime type. */
-  ApplicationVndAppleKeynote = 'APPLICATION_VND_APPLE_KEYNOTE',
+  | 'APPLICATION_VND_APPLE_KEYNOTE'
   /** application/vnd.apple.numbers mime type. */
-  ApplicationVndAppleNumbers = 'APPLICATION_VND_APPLE_NUMBERS',
+  | 'APPLICATION_VND_APPLE_NUMBERS'
   /** application/vnd.apple.pages mime type. */
-  ApplicationVndApplePages = 'APPLICATION_VND_APPLE_PAGES',
+  | 'APPLICATION_VND_APPLE_PAGES'
   /** application/vnd.ms-access mime type. */
-  ApplicationVndMsAccess = 'APPLICATION_VND_MS_ACCESS',
+  | 'APPLICATION_VND_MS_ACCESS'
   /** application/vnd.ms-excel mime type. */
-  ApplicationVndMsExcel = 'APPLICATION_VND_MS_EXCEL',
+  | 'APPLICATION_VND_MS_EXCEL'
   /** application/vnd.ms-excel.addin.macroEnabled.12 mime type. */
-  ApplicationVndMsExcelAddinMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_ADDIN_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_EXCEL_ADDIN_MACROENABLED_12'
   /** application/vnd.ms-excel.sheet.binary.macroEnabled.12 mime type. */
-  ApplicationVndMsExcelSheetBinaryMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_SHEET_BINARY_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_EXCEL_SHEET_BINARY_MACROENABLED_12'
   /** application/vnd.ms-excel.sheet.macroEnabled.12 mime type. */
-  ApplicationVndMsExcelSheetMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_SHEET_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_EXCEL_SHEET_MACROENABLED_12'
   /** application/vnd.ms-excel.template.macroEnabled.12 mime type. */
-  ApplicationVndMsExcelTemplateMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_TEMPLATE_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_EXCEL_TEMPLATE_MACROENABLED_12'
   /** application/vnd.ms-powerpoint mime type. */
-  ApplicationVndMsPowerpoint = 'APPLICATION_VND_MS_POWERPOINT',
+  | 'APPLICATION_VND_MS_POWERPOINT'
   /** application/vnd.ms-powerpoint.addin.macroEnabled.12 mime type. */
-  ApplicationVndMsPowerpointAddinMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_ADDIN_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_POWERPOINT_ADDIN_MACROENABLED_12'
   /** application/vnd.ms-powerpoint.presentation.macroEnabled.12 mime type. */
-  ApplicationVndMsPowerpointPresentationMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_PRESENTATION_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_POWERPOINT_PRESENTATION_MACROENABLED_12'
   /** application/vnd.ms-powerpoint.slideshow.macroEnabled.12 mime type. */
-  ApplicationVndMsPowerpointSlideshowMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_SLIDESHOW_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_POWERPOINT_SLIDESHOW_MACROENABLED_12'
   /** application/vnd.ms-powerpoint.slide.macroEnabled.12 mime type. */
-  ApplicationVndMsPowerpointSlideMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_SLIDE_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_POWERPOINT_SLIDE_MACROENABLED_12'
   /** application/vnd.ms-powerpoint.template.macroEnabled.12 mime type. */
-  ApplicationVndMsPowerpointTemplateMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_TEMPLATE_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_POWERPOINT_TEMPLATE_MACROENABLED_12'
   /** application/vnd.ms-project mime type. */
-  ApplicationVndMsProject = 'APPLICATION_VND_MS_PROJECT',
+  | 'APPLICATION_VND_MS_PROJECT'
   /** application/vnd.ms-word.document.macroEnabled.12 mime type. */
-  ApplicationVndMsWordDocumentMacroenabled_12 = 'APPLICATION_VND_MS_WORD_DOCUMENT_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_WORD_DOCUMENT_MACROENABLED_12'
   /** application/vnd.ms-word.template.macroEnabled.12 mime type. */
-  ApplicationVndMsWordTemplateMacroenabled_12 = 'APPLICATION_VND_MS_WORD_TEMPLATE_MACROENABLED_12',
+  | 'APPLICATION_VND_MS_WORD_TEMPLATE_MACROENABLED_12'
   /** application/vnd.ms-write mime type. */
-  ApplicationVndMsWrite = 'APPLICATION_VND_MS_WRITE',
+  | 'APPLICATION_VND_MS_WRITE'
   /** application/vnd.ms-xpsdocument mime type. */
-  ApplicationVndMsXpsdocument = 'APPLICATION_VND_MS_XPSDOCUMENT',
+  | 'APPLICATION_VND_MS_XPSDOCUMENT'
   /** application/vnd.oasis.opendocument.chart mime type. */
-  ApplicationVndOasisOpendocumentChart = 'APPLICATION_VND_OASIS_OPENDOCUMENT_CHART',
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_CHART'
   /** application/vnd.oasis.opendocument.database mime type. */
-  ApplicationVndOasisOpendocumentDatabase = 'APPLICATION_VND_OASIS_OPENDOCUMENT_DATABASE',
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_DATABASE'
   /** application/vnd.oasis.opendocument.formula mime type. */
-  ApplicationVndOasisOpendocumentFormula = 'APPLICATION_VND_OASIS_OPENDOCUMENT_FORMULA',
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_FORMULA'
   /** application/vnd.oasis.opendocument.graphics mime type. */
-  ApplicationVndOasisOpendocumentGraphics = 'APPLICATION_VND_OASIS_OPENDOCUMENT_GRAPHICS',
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_GRAPHICS'
   /** application/vnd.oasis.opendocument.presentation mime type. */
-  ApplicationVndOasisOpendocumentPresentation = 'APPLICATION_VND_OASIS_OPENDOCUMENT_PRESENTATION',
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_PRESENTATION'
   /** application/vnd.oasis.opendocument.spreadsheet mime type. */
-  ApplicationVndOasisOpendocumentSpreadsheet = 'APPLICATION_VND_OASIS_OPENDOCUMENT_SPREADSHEET',
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_SPREADSHEET'
   /** application/vnd.oasis.opendocument.text mime type. */
-  ApplicationVndOasisOpendocumentText = 'APPLICATION_VND_OASIS_OPENDOCUMENT_TEXT',
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_TEXT'
   /** application/vnd.openxmlformats-officedocument.presentationml.presentation mime type. */
-  ApplicationVndOpenxmlformatsOfficedocumentPresentationmlPresentation = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_PRESENTATION',
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_PRESENTATION'
   /** application/vnd.openxmlformats-officedocument.presentationml.slide mime type. */
-  ApplicationVndOpenxmlformatsOfficedocumentPresentationmlSlide = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDE',
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDE'
   /** application/vnd.openxmlformats-officedocument.presentationml.slideshow mime type. */
-  ApplicationVndOpenxmlformatsOfficedocumentPresentationmlSlideshow = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDESHOW',
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDESHOW'
   /** application/vnd.openxmlformats-officedocument.presentationml.template mime type. */
-  ApplicationVndOpenxmlformatsOfficedocumentPresentationmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_TEMPLATE',
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_TEMPLATE'
   /** application/vnd.openxmlformats-officedocument.spreadsheetml.sheet mime type. */
-  ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_SHEET',
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_SHEET'
   /** application/vnd.openxmlformats-officedocument.spreadsheetml.template mime type. */
-  ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_TEMPLATE',
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_TEMPLATE'
   /** application/vnd.openxmlformats-officedocument.wordprocessingml.document mime type. */
-  ApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlDocument = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_DOCUMENT',
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_DOCUMENT'
   /** application/vnd.openxmlformats-officedocument.wordprocessingml.template mime type. */
-  ApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_TEMPLATE',
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_TEMPLATE'
   /** application/wordperfect mime type. */
-  ApplicationWordperfect = 'APPLICATION_WORDPERFECT',
+  | 'APPLICATION_WORDPERFECT'
   /** application/x-7z-compressed mime type. */
-  ApplicationX_7ZCompressed = 'APPLICATION_X_7Z_COMPRESSED',
+  | 'APPLICATION_X_7Z_COMPRESSED'
   /** application/x-gzip mime type. */
-  ApplicationXGzip = 'APPLICATION_X_GZIP',
+  | 'APPLICATION_X_GZIP'
   /** application/x-tar mime type. */
-  ApplicationXTar = 'APPLICATION_X_TAR',
+  | 'APPLICATION_X_TAR'
   /** application/zip mime type. */
-  ApplicationZip = 'APPLICATION_ZIP',
+  | 'APPLICATION_ZIP'
   /** audio/aac mime type. */
-  AudioAac = 'AUDIO_AAC',
+  | 'AUDIO_AAC'
   /** audio/flac mime type. */
-  AudioFlac = 'AUDIO_FLAC',
+  | 'AUDIO_FLAC'
   /** audio/midi mime type. */
-  AudioMidi = 'AUDIO_MIDI',
+  | 'AUDIO_MIDI'
   /** audio/mpeg mime type. */
-  AudioMpeg = 'AUDIO_MPEG',
+  | 'AUDIO_MPEG'
   /** audio/ogg mime type. */
-  AudioOgg = 'AUDIO_OGG',
+  | 'AUDIO_OGG'
   /** audio/wav mime type. */
-  AudioWav = 'AUDIO_WAV',
+  | 'AUDIO_WAV'
   /** audio/x-matroska mime type. */
-  AudioXMatroska = 'AUDIO_X_MATROSKA',
+  | 'AUDIO_X_MATROSKA'
   /** audio/x-ms-wax mime type. */
-  AudioXMsWax = 'AUDIO_X_MS_WAX',
+  | 'AUDIO_X_MS_WAX'
   /** audio/x-ms-wma mime type. */
-  AudioXMsWma = 'AUDIO_X_MS_WMA',
+  | 'AUDIO_X_MS_WMA'
   /** audio/x-realaudio mime type. */
-  AudioXRealaudio = 'AUDIO_X_REALAUDIO',
+  | 'AUDIO_X_REALAUDIO'
   /** image/avif mime type. */
-  ImageAvif = 'IMAGE_AVIF',
+  | 'IMAGE_AVIF'
   /** image/bmp mime type. */
-  ImageBmp = 'IMAGE_BMP',
+  | 'IMAGE_BMP'
   /** image/gif mime type. */
-  ImageGif = 'IMAGE_GIF',
+  | 'IMAGE_GIF'
   /** image/heic mime type. */
-  ImageHeic = 'IMAGE_HEIC',
+  | 'IMAGE_HEIC'
   /** image/heic-sequence mime type. */
-  ImageHeicSequence = 'IMAGE_HEIC_SEQUENCE',
+  | 'IMAGE_HEIC_SEQUENCE'
   /** image/heif mime type. */
-  ImageHeif = 'IMAGE_HEIF',
+  | 'IMAGE_HEIF'
   /** image/heif-sequence mime type. */
-  ImageHeifSequence = 'IMAGE_HEIF_SEQUENCE',
+  | 'IMAGE_HEIF_SEQUENCE'
   /** image/jpeg mime type. */
-  ImageJpeg = 'IMAGE_JPEG',
+  | 'IMAGE_JPEG'
   /** image/png mime type. */
-  ImagePng = 'IMAGE_PNG',
+  | 'IMAGE_PNG'
   /** image/tiff mime type. */
-  ImageTiff = 'IMAGE_TIFF',
+  | 'IMAGE_TIFF'
   /** image/webp mime type. */
-  ImageWebp = 'IMAGE_WEBP',
+  | 'IMAGE_WEBP'
   /** image/x-icon mime type. */
-  ImageXIcon = 'IMAGE_X_ICON',
+  | 'IMAGE_X_ICON'
   /** text/calendar mime type. */
-  TextCalendar = 'TEXT_CALENDAR',
+  | 'TEXT_CALENDAR'
   /** text/css mime type. */
-  TextCss = 'TEXT_CSS',
+  | 'TEXT_CSS'
   /** text/csv mime type. */
-  TextCsv = 'TEXT_CSV',
+  | 'TEXT_CSV'
   /** text/html mime type. */
-  TextHtml = 'TEXT_HTML',
+  | 'TEXT_HTML'
   /** text/plain mime type. */
-  TextPlain = 'TEXT_PLAIN',
+  | 'TEXT_PLAIN'
   /** text/richtext mime type. */
-  TextRichtext = 'TEXT_RICHTEXT',
+  | 'TEXT_RICHTEXT'
   /** text/tab-separated-values mime type. */
-  TextTabSeparatedValues = 'TEXT_TAB_SEPARATED_VALUES',
+  | 'TEXT_TAB_SEPARATED_VALUES'
   /** text/vtt mime type. */
-  TextVtt = 'TEXT_VTT',
+  | 'TEXT_VTT'
   /** video/3gpp mime type. */
-  Video_3Gpp = 'VIDEO_3GPP',
+  | 'VIDEO_3GPP'
   /** video/3gpp2 mime type. */
-  Video_3Gpp2 = 'VIDEO_3GPP2',
+  | 'VIDEO_3GPP2'
   /** video/avi mime type. */
-  VideoAvi = 'VIDEO_AVI',
+  | 'VIDEO_AVI'
   /** video/divx mime type. */
-  VideoDivx = 'VIDEO_DIVX',
+  | 'VIDEO_DIVX'
   /** video/mp4 mime type. */
-  VideoMp4 = 'VIDEO_MP4',
+  | 'VIDEO_MP4'
   /** video/mpeg mime type. */
-  VideoMpeg = 'VIDEO_MPEG',
+  | 'VIDEO_MPEG'
   /** video/ogg mime type. */
-  VideoOgg = 'VIDEO_OGG',
+  | 'VIDEO_OGG'
   /** video/quicktime mime type. */
-  VideoQuicktime = 'VIDEO_QUICKTIME',
+  | 'VIDEO_QUICKTIME'
   /** video/webm mime type. */
-  VideoWebm = 'VIDEO_WEBM',
+  | 'VIDEO_WEBM'
   /** video/x-flv mime type. */
-  VideoXFlv = 'VIDEO_X_FLV',
+  | 'VIDEO_X_FLV'
   /** video/x-matroska mime type. */
-  VideoXMatroska = 'VIDEO_X_MATROSKA',
+  | 'VIDEO_X_MATROSKA'
   /** video/x-ms-asf mime type. */
-  VideoXMsAsf = 'VIDEO_X_MS_ASF',
+  | 'VIDEO_X_MS_ASF'
   /** video/x-ms-wm mime type. */
-  VideoXMsWm = 'VIDEO_X_MS_WM',
+  | 'VIDEO_X_MS_WM'
   /** video/x-ms-wmv mime type. */
-  VideoXMsWmv = 'VIDEO_X_MS_WMV',
+  | 'VIDEO_X_MS_WMV'
   /** video/x-ms-wmx mime type. */
-  VideoXMsWmx = 'VIDEO_X_MS_WMX'
-}
+  | 'VIDEO_X_MS_WMX';
 
 /** An object with a globally unique identifier. All objects that can be identified by a unique ID implement this interface. */
 export type Node = {
@@ -4868,12 +4846,11 @@ export type OneToOneConnection = {
 };
 
 /** Sort direction for ordered results. Determines whether items are returned in ascending or descending order. */
-export enum OrderEnum {
+export type OrderEnum =
   /** Results ordered from lowest to highest values (i.e. A-Z, oldest-newest) */
-  Asc = 'ASC',
+  | 'ASC'
   /** Results ordered from highest to lowest values (i.e. Z-A, newest-oldest) */
-  Desc = 'DESC'
-}
+  | 'DESC';
 
 /** A standalone content entry generally used for static, non-chronological content such as &quot;About Us&quot; or &quot;Contact&quot; pages. */
 export type Page = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithAuthor & NodeWithComments & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithPageAttributes & NodeWithRevisions & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
@@ -5096,14 +5073,13 @@ export type PageConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific Page. Specifies which unique attribute is used to find an exact Page. */
-export enum PageIdType {
+export type PageIdType =
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Metadata for cursor-based pagination. Provides cursors for continuing pagination and boolean flags indicating if more items exist in either direction. */
 export type PageInfo = {
@@ -5360,22 +5336,21 @@ export type PluginConnectionPageInfo = {
 };
 
 /** Operational status of a plugin. Indicates whether a plugin is active, inactive, or in another state that affects its functionality. */
-export enum PluginStatusEnum {
+export type PluginStatusEnum =
   /** The plugin is currently active. */
-  Active = 'ACTIVE',
+  | 'ACTIVE'
   /** The plugin is a drop-in plugin. */
-  DropIn = 'DROP_IN',
+  | 'DROP_IN'
   /** The plugin is currently inactive. */
-  Inactive = 'INACTIVE',
+  | 'INACTIVE'
   /** The plugin is a must-use plugin. */
-  MustUse = 'MUST_USE',
+  | 'MUST_USE'
   /** The plugin is technically active but was paused while loading. */
-  Paused = 'PAUSED',
+  | 'PAUSED'
   /** The plugin was active recently. */
-  RecentlyActive = 'RECENTLY_ACTIVE',
+  | 'RECENTLY_ACTIVE'
   /** The plugin has an upgrade available. */
-  Upgrade = 'UPGRADE'
-}
+  | 'UPGRADE';
 
 /** A chronological content entry typically used for blog posts, news articles, or similar date-based content. */
 export type Post = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithAuthor & NodeWithComments & NodeWithContentEditor & NodeWithExcerpt & NodeWithFeaturedImage & NodeWithRevisions & NodeWithTemplate & NodeWithTitle & NodeWithTrackbacks & Previewable & UniformResourceIdentifiable & {
@@ -5793,18 +5768,17 @@ export type PostFormatConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific PostFormat. Determines which unique property (global ID, database ID, slug, etc.) is used to locate the PostFormat. */
-export enum PostFormatIdType {
+export type PostFormatIdType =
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Connection between the PostFormat type and the ContentNode type */
 export type PostFormatToContentNodeConnection = Connection & ContentNodeConnection & {
@@ -5992,56 +5966,52 @@ export type PostFormatToTaxonomyConnectionEdge = Edge & OneToOneConnection & Tax
 };
 
 /** Identifier types for retrieving a specific Post. Specifies which unique attribute is used to find an exact Post. */
-export enum PostIdType {
+export type PostIdType =
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Content field rendering options. Determines whether content fields are returned as raw data or with applied formatting and transformations. Default is RENDERED. */
-export enum PostObjectFieldFormatEnum {
+export type PostObjectFieldFormatEnum =
   /** Unprocessed content exactly as stored in the database, requires appropriate permissions. */
-  Raw = 'RAW',
+  | 'RAW'
   /** Content with all formatting and transformations applied, ready for display. */
-  Rendered = 'RENDERED'
-}
+  | 'RENDERED';
 
 /** Date field selectors for content filtering. Specifies which date attribute (creation date, modification date) should be used for date-based queries. */
-export enum PostObjectsConnectionDateColumnEnum {
+export type PostObjectsConnectionDateColumnEnum =
   /** The date the comment was created in local time. */
-  Date = 'DATE',
+  | 'DATE'
   /** The most recent modification date of the comment. */
-  Modified = 'MODIFIED'
-}
+  | 'MODIFIED';
 
 /** Content sorting attributes for post-type objects. Identifies which content property should be used to determine result order. */
-export enum PostObjectsConnectionOrderbyEnum {
+export type PostObjectsConnectionOrderbyEnum =
   /** Ordering by content author (typically by author name). */
-  Author = 'AUTHOR',
+  | 'AUTHOR'
   /** Ordering by popularity based on number of comments. */
-  CommentCount = 'COMMENT_COUNT',
+  | 'COMMENT_COUNT'
   /** Chronological ordering by publication date. */
-  Date = 'DATE',
+  | 'DATE'
   /** Maintain custom order of IDs exactly as specified in the query with the IN field. */
-  In = 'IN',
+  | 'IN'
   /** Ordering by manually defined sort position. */
-  MenuOrder = 'MENU_ORDER',
+  | 'MENU_ORDER'
   /** Chronological ordering by modified date. */
-  Modified = 'MODIFIED',
+  | 'MODIFIED'
   /** Maintain custom order of IDs exactly as specified in the query with the NAME_IN field. */
-  NameIn = 'NAME_IN',
+  | 'NAME_IN'
   /** Ordering by parent-child relationship in hierarchical content. */
-  Parent = 'PARENT',
+  | 'PARENT'
   /** Alphabetical ordering by URL-friendly name. */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Alphabetical ordering by content title */
-  Title = 'TITLE'
-}
+  | 'TITLE';
 
 /** Options for ordering the connection */
 export type PostObjectsConnectionOrderbyInput = {
@@ -6072,32 +6042,31 @@ export type PostPostFormatsNodeInput = {
 };
 
 /** Publishing status that controls the visibility and editorial state of content. Determines whether content is published, pending review, in draft state, or private. */
-export enum PostStatusEnum {
+export type PostStatusEnum =
   /** Automatically saved content that has not been manually saved */
-  AutoDraft = 'AUTO_DRAFT',
+  | 'AUTO_DRAFT'
   /** Content that is saved but not yet published or visible to the public */
-  Draft = 'DRAFT',
+  | 'DRAFT'
   /** Objects with the future status */
-  Future = 'FUTURE',
+  | 'FUTURE'
   /** Content that inherits its status from a parent object */
-  Inherit = 'INHERIT',
+  | 'INHERIT'
   /** Content awaiting review before publication */
-  Pending = 'PENDING',
+  | 'PENDING'
   /** Content only visible to authorized users with appropriate permissions */
-  Private = 'PRIVATE',
+  | 'PRIVATE'
   /** Content that is publicly visible to all visitors */
-  Publish = 'PUBLISH',
+  | 'PUBLISH'
   /** Objects with the request-completed status */
-  RequestCompleted = 'REQUEST_COMPLETED',
+  | 'REQUEST_COMPLETED'
   /** Objects with the request-confirmed status */
-  RequestConfirmed = 'REQUEST_CONFIRMED',
+  | 'REQUEST_CONFIRMED'
   /** Objects with the request-failed status */
-  RequestFailed = 'REQUEST_FAILED',
+  | 'REQUEST_FAILED'
   /** Objects with the request-pending status */
-  RequestPending = 'REQUEST_PENDING',
+  | 'REQUEST_PENDING'
   /** Content marked for deletion but still recoverable */
-  Trash = 'TRASH'
-}
+  | 'TRASH';
 
 /** Set relationships between the post to tags */
 export type PostTagsInput = {
@@ -6858,12 +6827,11 @@ export type RegisterUserPayload = {
 };
 
 /** Logical operators for filter conditions. Determines whether multiple filtering criteria should be combined with AND (all must match) or OR (any can match). */
-export enum RelationEnum {
+export type RelationEnum =
   /** All conditions must match (more restrictive filtering) */
-  And = 'AND',
+  | 'AND'
   /** Any condition can match (more inclusive filtering) */
-  Or = 'OR'
-}
+  | 'OR';
 
 /** Input for the resetUserPassword mutation. */
 export type ResetUserPasswordInput = {
@@ -9265,10 +9233,9 @@ export type SeoBreadcrumbs = {
 };
 
 /** Types of cards */
-export enum SeoCardType {
-  Summary = 'summary',
-  SummaryLargeImage = 'summary_large_image'
-}
+export type SeoCardType =
+  | 'summary'
+  | 'summary_large_image';
 
 /** The Yoast SEO site level configuration data */
 export type SeoConfig = {
@@ -9568,20 +9535,18 @@ export type SeoWebmaster = {
 };
 
 /** Script insertion positions in the document structure. Determines whether scripts are placed in the document head or before the closing body tag. */
-export enum ScriptLoadingGroupLocationEnum {
+export type ScriptLoadingGroupLocationEnum =
   /** Delayed loading at end of document, right before the closing `<body>` tag. (allows content to render first) */
-  Footer = 'FOOTER',
+  | 'FOOTER'
   /** Early loading in document `<head>` tag. (executes before page content renders) */
-  Header = 'HEADER'
-}
+  | 'HEADER';
 
 /** Script loading optimization attributes. Controls browser behavior for script loading to improve page performance (async or defer). */
-export enum ScriptLoadingStrategyEnum {
+export type ScriptLoadingStrategyEnum =
   /** Load script in parallel with page rendering, executing as soon as downloaded */
-  Async = 'ASYNC',
+  | 'ASYNC'
   /** Download script in parallel but defer execution until page is fully parsed */
-  Defer = 'DEFER'
-}
+  | 'DEFER';
 
 /** Input for the sendPasswordResetEmail mutation. */
 export type SendPasswordResetEmailInput = {
@@ -9773,18 +9738,17 @@ export type TagConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific Tag. Determines which unique property (global ID, database ID, slug, etc.) is used to locate the Tag. */
-export enum TagIdType {
+export type TagIdType =
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Connection between the Tag type and the ContentNode type */
 export type TagToContentNodeConnection = Connection & ContentNodeConnection & {
@@ -10069,24 +10033,22 @@ export type TaxonomyConnectionPageInfo = {
 };
 
 /** Available classification systems for organizing content. Identifies the different taxonomy types that can be used for content categorization. */
-export enum TaxonomyEnum {
+export type TaxonomyEnum =
   /** Taxonomy enum category */
-  Category = 'CATEGORY',
+  | 'CATEGORY'
   /** Taxonomy enum graphql_document_group */
-  Graphqldocumentgroup = 'GRAPHQLDOCUMENTGROUP',
+  | 'GRAPHQLDOCUMENTGROUP'
   /** Taxonomy enum post_format */
-  Postformat = 'POSTFORMAT',
+  | 'POSTFORMAT'
   /** Taxonomy enum post_tag */
-  Tag = 'TAG'
-}
+  | 'TAG';
 
 /** Identifier types for retrieving a taxonomy definition. Determines whether to look up taxonomies by ID or name. */
-export enum TaxonomyIdTypeEnum {
+export type TaxonomyIdTypeEnum =
   /** The globally unique ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the taxonomy */
-  Name = 'NAME'
-}
+  | 'NAME';
 
 export type TaxonomySeo = {
   __typename?: 'TaxonomySEO';
@@ -10286,18 +10248,17 @@ export type TermNodeConnectionPageInfo = {
 };
 
 /** The Type of Identifier used to fetch a single resource. Default is "ID". To be used along with the "id" field. */
-export enum TermNodeIdTypeEnum {
+export type TermNodeIdTypeEnum =
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Connection between the TermNode type and the EnqueuedScript type */
 export type TermNodeToEnqueuedScriptConnection = Connection & EnqueuedScriptConnection & {
@@ -10370,22 +10331,21 @@ export type TermNodeToEnqueuedStylesheetConnectionPageInfo = EnqueuedStylesheetC
 };
 
 /** Sorting attributes for taxonomy term collections. Determines which property of taxonomy terms is used for ordering results. */
-export enum TermObjectsConnectionOrderbyEnum {
+export type TermObjectsConnectionOrderbyEnum =
   /** Ordering by number of associated content items. */
-  Count = 'COUNT',
+  | 'COUNT'
   /** Alphabetical ordering by term description text. */
-  Description = 'DESCRIPTION',
+  | 'DESCRIPTION'
   /** Alphabetical ordering by term name. */
-  Name = 'NAME',
+  | 'NAME'
   /** Alphabetical ordering by URL-friendly name. */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Ordering by assigned term grouping value. */
-  TermGroup = 'TERM_GROUP',
+  | 'TERM_GROUP'
   /** Ordering by internal identifier. */
-  TermId = 'TERM_ID',
+  | 'TERM_ID'
   /** Ordering by manually defined sort position. */
-  TermOrder = 'TERM_ORDER'
-}
+  | 'TERM_ORDER';
 
 /** A theme object */
 export type Theme = Node & {
@@ -11122,20 +11082,19 @@ export type UserConnectionPageInfo = {
 };
 
 /** Identifier types for retrieving a specific user. Determines whether to look up users by ID, email, username, or other unique properties. */
-export enum UserNodeIdTypeEnum {
+export type UserNodeIdTypeEnum =
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The Email of the User */
-  Email = 'EMAIL',
+  | 'EMAIL'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The slug of the User */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI',
+  | 'URI'
   /** The username the User uses to login with */
-  Username = 'USERNAME'
-}
+  | 'USERNAME';
 
 /** A user role object */
 export type UserRole = Node & {
@@ -11185,26 +11144,25 @@ export type UserRoleConnectionPageInfo = {
 };
 
 /** Permission levels for user accounts. Defines the standard access levels that control what actions users can perform within the system. */
-export enum UserRoleEnum {
+export type UserRoleEnum =
   /** User role with specific capabilities */
-  Administrator = 'ADMINISTRATOR',
+  | 'ADMINISTRATOR'
   /** User role with specific capabilities */
-  Author = 'AUTHOR',
+  | 'AUTHOR'
   /** User role with specific capabilities */
-  Contributor = 'CONTRIBUTOR',
+  | 'CONTRIBUTOR'
   /** User role with specific capabilities */
-  Customer = 'CUSTOMER',
+  | 'CUSTOMER'
   /** User role with specific capabilities */
-  Editor = 'EDITOR',
+  | 'EDITOR'
   /** User role with specific capabilities */
-  SeoEditor = 'SEO_EDITOR',
+  | 'SEO_EDITOR'
   /** User role with specific capabilities */
-  SeoManager = 'SEO_MANAGER',
+  | 'SEO_MANAGER'
   /** User role with specific capabilities */
-  ShopManager = 'SHOP_MANAGER',
+  | 'SHOP_MANAGER'
   /** User role with specific capabilities */
-  Subscriber = 'SUBSCRIBER'
-}
+  | 'SUBSCRIBER';
 
 /** Connection between the User type and the Comment type */
 export type UserToCommentConnection = CommentConnection & Connection & {
@@ -11747,24 +11705,23 @@ export type UserToUserRoleConnectionPageInfo = PageInfo & UserRoleConnectionPage
 };
 
 /** User attribute sorting options. Determines which property of user accounts is used for ordering user listings. */
-export enum UsersConnectionOrderbyEnum {
+export type UsersConnectionOrderbyEnum =
   /** Order by display name */
-  DisplayName = 'DISPLAY_NAME',
+  | 'DISPLAY_NAME'
   /** Order by email address */
-  Email = 'EMAIL',
+  | 'EMAIL'
   /** Order by login */
-  Login = 'LOGIN',
+  | 'LOGIN'
   /** Preserve the login order given in the LOGIN_IN array */
-  LoginIn = 'LOGIN_IN',
+  | 'LOGIN_IN'
   /** Order by nice name */
-  NiceName = 'NICE_NAME',
+  | 'NICE_NAME'
   /** Preserve the nice name order given in the NICE_NAME_IN array */
-  NiceNameIn = 'NICE_NAME_IN',
+  | 'NICE_NAME_IN'
   /** Order by registration date */
-  Registered = 'REGISTERED',
+  | 'REGISTERED'
   /** Order by URL */
-  Url = 'URL'
-}
+  | 'URL';
 
 /** Options for ordering the connection */
 export type UsersConnectionOrderbyInput = {
@@ -11775,18 +11732,17 @@ export type UsersConnectionOrderbyInput = {
 };
 
 /** User properties that can be targeted in search operations. Defines which user attributes can be searched when looking for specific users. */
-export enum UsersConnectionSearchColumnEnum {
+export type UsersConnectionSearchColumnEnum =
   /** The user's email address. */
-  Email = 'EMAIL',
+  | 'EMAIL'
   /** The globally unique ID. */
-  Id = 'ID',
+  | 'ID'
   /** The username the User uses to login with. */
-  Login = 'LOGIN',
+  | 'LOGIN'
   /** A URL-friendly name for the user. The default is the user's username. */
-  Nicename = 'NICENAME',
+  | 'NICENAME'
   /** The URL of the user's website. */
-  Url = 'URL'
-}
+  | 'URL';
 
 /** Metadata for cursor-based pagination. Provides cursors for continuing pagination and boolean flags indicating if more items exist in either direction. */
 export type WpPageInfo = {
@@ -11864,6 +11820,18 @@ export type GetMediaItemsByIdsQueryVariables = Exact<{
 
 export type GetMediaItemsByIdsQuery = { __typename?: 'RootQuery', mediaItems?: { __typename?: 'RootQueryToMediaItemConnection', nodes: Array<{ __typename?: 'MediaItem', databaseId: number, sourceUrl?: string | null, mediaDetails?: { __typename?: 'MediaDetails', width?: number | null, sizes?: Array<{ __typename?: 'MediaSize', sourceUrl?: string | null, width?: string | null } | null> | null } | null }> } | null };
 
+export type GetPostBySlugQueryVariables = Exact<{
+  slug: Scalars['ID']['input'];
+}>;
+
+
+export type GetPostBySlugQuery = { __typename?: 'RootQuery', post?: { __typename?: 'Post', id: string, title?: string | null, slug?: string | null, content?: string | null, excerpt?: string | null, date?: string | null, seo?: { __typename?: 'PostTypeSEO', title?: string | null, metaDesc?: string | null, opengraphTitle?: string | null, opengraphDescription?: string | null, canonical?: string | null, opengraphImage?: { __typename?: 'MediaItem', sourceUrl?: string | null } | null } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, mediaItemUrl?: string | null, altText?: string | null, mediaDetails?: { __typename?: 'MediaDetails', width?: number | null, height?: number | null, sizes?: Array<{ __typename?: 'MediaSize', name?: string | null, sourceUrl?: string | null, width?: string | null, height?: string | null } | null> | null } | null } } | null } | null };
+
+export type GetMenuPageSlugsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMenuPageSlugsQuery = { __typename?: 'RootQuery', pages?: { __typename?: 'RootQueryToPageConnection', nodes: Array<{ __typename?: 'Page', id: string, slug?: string | null, title?: string | null, menuOrder?: number | null }> } | null };
+
 export const PageListFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageListFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Page"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"uri"}},{"kind":"Field","name":{"kind":"Name","value":"isFrontPage"}},{"kind":"Field","name":{"kind":"Name","value":"isPostsPage"}}]}}]} as unknown as DocumentNode<PageListFieldsFragment, unknown>;
 export const MediaFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}}]} as unknown as DocumentNode<MediaFieldsFragment, unknown>;
 export const PageFullFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageFullFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Page"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"seo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"metaDesc"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphTitle"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphDescription"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"canonical"}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MediaFields"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}}]} as unknown as DocumentNode<PageFullFieldsFragment, unknown>;
@@ -11871,7 +11839,9 @@ export const GaleriaFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind
 export const GetAllPageSlugsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPageSlugs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"EnumValue","value":"PUBLISH"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"uri"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"menuOrder"}}]}}]}}]}}]} as unknown as DocumentNode<GetAllPageSlugsQuery, GetAllPageSlugsQueryVariables>;
 export const GetAllPagesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllPages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageListFields"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageListFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Page"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"uri"}},{"kind":"Field","name":{"kind":"Name","value":"isFrontPage"}},{"kind":"Field","name":{"kind":"Name","value":"isPostsPage"}}]}}]} as unknown as DocumentNode<GetAllPagesQuery, GetAllPagesQueryVariables>;
 export const GetPageBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPageBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"page"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}},{"kind":"Argument","name":{"kind":"Name","value":"idType"},"value":{"kind":"EnumValue","value":"URI"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PageFullFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"PageFullFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Page"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"seo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"metaDesc"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphTitle"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphDescription"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"canonical"}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MediaFields"}}]}}]}}]}}]} as unknown as DocumentNode<GetPageBySlugQuery, GetPageBySlugQueryVariables>;
-export const GetPostsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPosts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"defaultValue":{"kind":"IntValue","value":"10"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"excerpt"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MediaFields"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}}]} as unknown as DocumentNode<GetPostsQuery, GetPostsQueryVariables>;
+export const GetPostsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPosts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"defaultValue":{"kind":"IntValue","value":"10"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"EnumValue","value":"PUBLISH"}},{"kind":"ObjectField","name":{"kind":"Name","value":"orderby"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"field"},"value":{"kind":"EnumValue","value":"DATE"}},{"kind":"ObjectField","name":{"kind":"Name","value":"order"},"value":{"kind":"EnumValue","value":"DESC"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"excerpt"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MediaFields"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}}]} as unknown as DocumentNode<GetPostsQuery, GetPostsQueryVariables>;
 export const GetAllGaleriasDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllGalerias"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"galerias"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"GaleriaFields"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"GaleriaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Galeria"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"galeriaMostrarEnFrontend"}},{"kind":"Field","name":{"kind":"Name","value":"seo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"metaDesc"}}]}},{"kind":"Field","name":{"kind":"Name","value":"galeriaImagenes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MediaFields"}}]}}]}}]} as unknown as DocumentNode<GetAllGaleriasQuery, GetAllGaleriasQueryVariables>;
-export const GetGaleriaBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetGaleriaBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"galeria"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}},{"kind":"Argument","name":{"kind":"Name","value":"idType"},"value":{"kind":"EnumValue","value":"URI"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"GaleriaFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"GaleriaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Galeria"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"galeriaMostrarEnFrontend"}},{"kind":"Field","name":{"kind":"Name","value":"seo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"metaDesc"}}]}},{"kind":"Field","name":{"kind":"Name","value":"galeriaImagenes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MediaFields"}}]}}]}}]} as unknown as DocumentNode<GetGaleriaBySlugQuery, GetGaleriaBySlugQueryVariables>;
+export const GetGaleriaBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetGaleriaBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"galeria"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}},{"kind":"Argument","name":{"kind":"Name","value":"idType"},"value":{"kind":"EnumValue","value":"SLUG"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"GaleriaFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"GaleriaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Galeria"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"galeriaMostrarEnFrontend"}},{"kind":"Field","name":{"kind":"Name","value":"seo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"metaDesc"}}]}},{"kind":"Field","name":{"kind":"Name","value":"galeriaImagenes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MediaFields"}}]}}]}}]} as unknown as DocumentNode<GetGaleriaBySlugQuery, GetGaleriaBySlugQueryVariables>;
 export const GetMediaItemsByIdsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMediaItemsByIds"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ids"}},"type":{"kind":"ListType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mediaItems"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ids"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"databaseId"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetMediaItemsByIdsQuery, GetMediaItemsByIdsQueryVariables>;
+export const GetPostBySlugDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPostBySlug"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"post"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}},{"kind":"Argument","name":{"kind":"Name","value":"idType"},"value":{"kind":"EnumValue","value":"SLUG"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"excerpt"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"seo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"metaDesc"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphTitle"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphDescription"}},{"kind":"Field","name":{"kind":"Name","value":"opengraphImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"canonical"}}]}},{"kind":"Field","name":{"kind":"Name","value":"featuredImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MediaFields"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MediaFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"MediaItem"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"mediaItemUrl"}},{"kind":"Field","name":{"kind":"Name","value":"altText"}},{"kind":"Field","name":{"kind":"Name","value":"mediaDetails"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}},{"kind":"Field","name":{"kind":"Name","value":"sizes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"sourceUrl"}},{"kind":"Field","name":{"kind":"Name","value":"width"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]}}]} as unknown as DocumentNode<GetPostBySlugQuery, GetPostBySlugQueryVariables>;
+export const GetMenuPageSlugsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMenuPageSlugs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"EnumValue","value":"PUBLISH"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"menuOrder"}}]}}]}}]}}]} as unknown as DocumentNode<GetMenuPageSlugsQuery, GetMenuPageSlugsQueryVariables>;

@@ -31,6 +31,7 @@ const config: CodegenConfig = {
     "src/api/graphql/generated.ts": {
       plugins: ["typescript", "typescript-operations", "typed-document-node"],
       config: {
+        enumsAsTypes: true,
         useTypeImports: true,
       },
     },

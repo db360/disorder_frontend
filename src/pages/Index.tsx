@@ -1,26 +1,53 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { getPageBySlug } from "../lib/apiFunctions";
 import type { GetPageBySlugQuery } from "../api/graphql/generated";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import useSEO from "../hooks/useSEO";
-import ScrollText from "../ui/ScrollText";
-import SwipeCarousel from "../ui/Carousel";
-import ImageTrail from "../ui/ImageTrail";
 import { parseWordPressContent } from "../lib/parseWordPressContent";
-import Map from "../ui/Map";
-import RevealLinks from "../ui/RevealLinks";
-import FallingText from "../ui/FallingText";
-import StillBurningAnimatedHero from "../ui/StillBurningAnimatedHero";
-import Carousel from "../ui/Carousel";
+import type { CarouselImage } from "../ui/Carousel";
+
+const DisorderLogo = lazy(() => import("../ui/DisorderLogo"));
+const Map = lazy(() => import("../ui/Map"));
+const ImageTrail = lazy(() => import("../ui/ImageTrail"));
+const StillBurningAnimatedHero = lazy(
+  () => import("../ui/StillBurningAnimatedHero"),
+);
+const Carousel = lazy(() => import("../ui/Carousel"));
+const SwipeCarousel = lazy(() => import("../ui/Carousel"));
+const RevealLinks = lazy(() => import("../ui/RevealLinks"));
 
 export default function Index() {
-
-  // Añadir scroll snap al montar y quitar al desmontar
+  // Activar scroll snap solo en desktop para evitar problemas en móvil
   useEffect(() => {
-    document.documentElement.classList.add("page-snap");
+    const desktopMediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    const updateSnapState = () => {
+      const isDesktop = desktopMediaQuery.matches;
+      document.documentElement.classList.toggle("page-snap", isDesktop);
+      document.body.classList.toggle("page-snap", isDesktop);
+    };
+
+    updateSnapState();
+
+    const handleChange = () => {
+      updateSnapState();
+    };
+
+    if (typeof desktopMediaQuery.addEventListener === "function") {
+      desktopMediaQuery.addEventListener("change", handleChange);
+    } else {
+      desktopMediaQuery.addListener(handleChange);
+    }
+
     return () => {
       document.documentElement.classList.remove("page-snap");
+      document.body.classList.remove("page-snap");
+      if (typeof desktopMediaQuery.removeEventListener === "function") {
+        desktopMediaQuery.removeEventListener("change", handleChange);
+      } else {
+        desktopMediaQuery.removeListener(handleChange);
+      }
     };
   }, []);
 
@@ -28,7 +55,7 @@ export default function Index() {
   const [stillBurningPage, setStillBurningPage] = useState<
     GetPageBySlugQuery["page"] | null
   >(null);
-
+  const [activeTechniqueIndex, setActiveTechniqueIndex] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
@@ -124,11 +151,98 @@ export default function Index() {
     );
   }, [stillBurningPage?.content]);
 
+  const serviceGroups = [
+    {
+      eyebrow: "Tatuaje",
+      title: "Técnicas que trabajamos en el estudio",
+      description:
+        "Cada pieza se plantea desde el diseño, la zona del cuerpo y la intención visual para elegir la técnica adecuada.",
+      items: ["Tradicional", "Blackwork", "Realismo", "Fine Line", "Cover-ups"],
+      accent: "from-primary-300/35 via-primary-200/20 to-transparent",
+    },
+    {
+      eyebrow: "Textil y visual",
+      title: "Producción gráfica más allá del tatuaje",
+      description:
+        "También desarrollamos proyectos para marcas, colectivos y clientes que necesitan llevar su identidad a prendas, carteles o piezas ilustradas.",
+      items: [
+        "Serigrafía en camisetas y prendas",
+        "Diseño gráfico aplicado a merch y comunicación",
+        "Ilustración para proyectos editoriales, visuales o de marca",
+      ],
+      accent:
+        "from-(--color-disorder-yellow)/30 via-primary-200/15 to-transparent",
+    },
+  ];
+
+  // const servicePillars = [
+  //   "Diseño personalizado antes de cada trabajo",
+  //   "Acompañamiento creativo desde la idea hasta la entrega",
+  //   "Producción pensada para piezas únicas y series cortas",
+  // ];
+
+  const tattooTechniques = useMemo(() => {
+    const fallbackImage: CarouselImage = {
+      id: "tattoo-technique-fallback",
+      src: "/img/placeholder.png",
+      title: "Tatuaje Disorder",
+    };
+    const sourceImages =
+      galleryImagesBySelection.both.length > 0
+        ? galleryImagesBySelection.both
+        : [fallbackImage];
+
+    return [
+      {
+        id: "tradicional",
+        name: "Tradicional",
+        description:
+          "Piezas sólidas, composición directa y una lectura potente desde la primera mirada.",
+        image: sourceImages[0 % sourceImages.length],
+      },
+      {
+        id: "blackwork",
+        name: "Blackwork",
+        description:
+          "Negro intenso, contraste marcado y diseños con peso visual limpio y contundente.",
+        image: sourceImages[1 % sourceImages.length],
+      },
+      {
+        id: "realismo",
+        name: "Realismo",
+        description:
+          "Volumen, textura y profundidad para piezas que necesitan detalle y presencia.",
+        image: sourceImages[2 % sourceImages.length],
+      },
+      {
+        id: "fine-line",
+        name: "Fine Line",
+        description:
+          "Línea fina y precisión para composiciones delicadas, limpias y muy controladas.",
+        image: sourceImages[3 % sourceImages.length],
+      },
+      {
+        id: "cover-ups",
+        name: "Cover-ups",
+        description:
+          "Rediseñamos piezas anteriores para darles una nueva dirección con criterio técnico y visual.",
+        image: sourceImages[4 % sourceImages.length],
+      },
+    ];
+  }, [galleryImagesBySelection.both]);
+
+  const safeActiveTechniqueIndex = Math.min(
+    activeTechniqueIndex,
+    Math.max(tattooTechniques.length - 1, 0),
+  );
+  const activeTechnique =
+    tattooTechniques[safeActiveTechniqueIndex] ?? tattooTechniques[0];
+
   useSEO(page?.seo, {
     title: page?.title ?? "Inicio",
     description:
       page?.seo?.metaDesc ??
-      "Bienvenido a Disorder Underground Shop, tatuajes, ropa y accesorios en un solo lugar. Descubre nuestro catálogo y reserva tu cita hoy.",
+      "Bienvenido a Disorder Underground Shop, tatuajes, ropa y accesorios en un solo lugar. Reserva tu cita hoy.",
   });
 
   if (!page) return <LoadingSpinner />;
@@ -142,23 +256,42 @@ export default function Index() {
           <motion.section
             key={section.id}
             id={section.id}
-            className={`home-section flex justify-center ${isHero ? "items-end" : "items-center"}`}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            viewport={{ amount: 0.6 }}
+            className={`home-section flex justify-center ${isHero ? "items-end overflow-hidden relative" : "items-center"}`}
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
           >
-
-
             {section.id === "hero" && (
-              <div className="w-full h-full">
-                <ScrollText
-                  text="Disorder Underground Shop"
-                  textSize={123}
-                  textY={50}
-                  containerClassName="h-100"
+              <div className="absolute inset-0">
+                <div
+                  className="absolute inset-0 z-0 bg-[url('/img/trazos-fondo.svg')] bg-center bg-cover bg-no-repeat opacity-30"
+                  aria-hidden="true"
                 />
-                <div className="max-w-3xl mx-auto space-y-6 px-8 text-center border-primary-100/50 border-2 rounded-lg py-6 bg-linear-to-br from-primary-100 via-primary-200 to-primary-300 dark:from-primary-700 dark:via-primary-600 dark:to-primary-500 shadow-2xl">
+
+                <div className="relative z-10">
+                  <div className="mx-auto mt-62 xl:mt-35 h-[min(52.5vw,472px)] w-[min(40vw,360px)]">
+                    <Suspense fallback={<div className="h-full w-full" />}>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        className="h-full w-full"
+                      >
+                        <DisorderLogo className="h-full w-full" />
+                      </motion.div>
+                    </Suspense>
+                  </div>
+                  <motion.img
+                    src="/img/servicios-titulo.webp"
+                    alt="Tatuaje destacado"
+                    width={820}
+                    height={1024}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.12 }}
+                    className="mx-auto mt-10 xl:mt-5 w-1/2 h-auto rounded-lg object-contain"
+                  />
+                </div>
+                {/* <div className="max-w-3xl mx-auto space-y-6 px-8 text-center border-primary-100/50 border-2 rounded-lg py-6 bg-linear-to-br from-primary-100 via-primary-200 to-primary-300 dark:from-primary-700 dark:via-primary-600 dark:to-primary-500 shadow-2xl">
                   {parsedContent.paragraphs.map((paragraph, paragraphIndex) => (
                     <FallingText
                       key={`${section.id}-paragraph-${paragraphIndex}-falling`}
@@ -179,12 +312,13 @@ export default function Index() {
                       mouseConstraintStiffness={1.2}
                     />
                   ))}
-                </div>
+
+                </div> */}
               </div>
             )}
 
             {section.id === "intro" && (
-              <div className="relative min-h-[500px] md:min-h-[500px] flex items-center justify-center w-full">
+              <div className="relative min-h-125 md:min-h-125 flex items-center justify-center w-full">
                 <img
                   src="/img/espiral.svg"
                   alt="Espiral decorativa"
@@ -192,152 +326,276 @@ export default function Index() {
                   className="absolute inset-0 m-auto w-[min(80vw,700px)] max-w-full max-h-full opacity-70 pointer-events-none select-none z-0 animate-[spin_3s_infinite_linear]"
                 />
                 <div className="relative z-10 w-full h-full">
-                  <ImageTrail
-                    items={galleryImagesBySelection.both.map(
-                      (image) => image.src,
-                    )}
-                    variant={1}
-                    centerText="TATÚATE CON NOSOTROS"
-                  />
+                  <Suspense fallback={<div className="h-full w-full" />}>
+                    <ImageTrail
+                      items={galleryImagesBySelection.both.map(
+                        (image) => image.src,
+                      )}
+                      variant={1}
+                      centerText="TATÚATE CON NOSOTROS"
+                    />
+                  </Suspense>
                 </div>
               </div>
             )}
 
             {section.id === "stillburning" && (
-              <StillBurningAnimatedHero
-                title="Still Burning"
-                images={stillBurningHeroImages}
-                className="h-full"
-                ctaLabel="DESCUBRIR STILL BURNING"
-                ctaHref="/still-burning"
-              />
+              <Suspense fallback={<div className="h-full w-full" />}>
+                <StillBurningAnimatedHero
+                  title="Still Burning"
+                  images={stillBurningHeroImages}
+                  className="h-full"
+                  ctaLabel="DESCUBRIR STILL BURNING"
+                  ctaHref="/still-burning"
+                />
+              </Suspense>
             )}
 
             {section.id === "services" && (
-              <div className="w-full max-w-6xl px-6">
-                <div className="mb-8 text-center">
-                  <p className="text-sm uppercase tracking-widest text-primary-300 dark:text-primary-200">
+              <div className="w-full max-w-7xl px-6 mt-8 md:mt-10 lg:mt-0">
+                <div className="mb-10 text-center">
+                  <p className="text-sm uppercase tracking-[0.35em] text-primary-300 dark:text-primary-200">
                     {section.subtitle}
                   </p>
                   <h2 className="mt-2 text-4xl font-bold text-primary-700 dark:text-primary-100 md:text-5xl">
                     {section.title}
                   </h2>
-                  <p className="mt-3 text-primary-600 dark:text-primary-200">
-                    Diseños personalizados, sesiones seguras y acabados premium
-                    para cada estilo.
-                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-                  {[
-                    {
-                      name: "Tatuaje Fine Line",
-                      duration: "1h - 3h",
-                      from: "Desde 90€",
-                      detail:
-                        "Líneas finas, lettering y microdiseños con alto detalle.",
-                    },
-                    {
-                      name: "Blackwork & Sombras",
-                      duration: "2h - 6h",
-                      from: "Desde 160€",
-                      detail:
-                        "Contrastes profundos, rellenos sólidos y degradados profesionales.",
-                    },
-                    {
-                      name: "Color Realista",
-                      duration: "3h - 8h",
-                      from: "Desde 220€",
-                      detail:
-                        "Trabajo por capas para lograr volumen, textura y color duradero.",
-                    },
-                  ].map((service) => (
-                    <article
-                      key={service.name}
-                      className="rounded-xl border border-primary-300/40 bg-primary-100/60 p-5 shadow-lg dark:border-primary-200/20 dark:bg-primary-900/55"
-                    >
-                      <h3 className="text-2xl font-bold text-primary-700 dark:text-primary-100">
-                        {service.name}
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.25fr_0.75fr]">
+                  <article className="relative overflow-hidden rounded-2xl border border-primary-300/40 bg-primary-100/65 p-6 shadow-lg dark:border-primary-200/20 dark:bg-primary-900/55">
+                    <div
+                      className={`pointer-events-none absolute inset-0 bg-linear-to-br ${serviceGroups[0].accent}`}
+                      aria-hidden="true"
+                    />
+                    <div className="relative z-10">
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-500 dark:text-primary-300">
+                        {serviceGroups[0].eyebrow}
+                      </p>
+                      <h3 className="mt-3 text-2xl font-bold text-primary-700 dark:text-primary-100 md:text-3xl">
+                        {serviceGroups[0].title}
                       </h3>
-                      <p className="mt-1 text-sm font-semibold text-primary-600 dark:text-primary-300">
-                        {service.from} · {service.duration}
+                      <p className="mt-3 max-w-2xl text-primary-700 dark:text-primary-200">
+                        {serviceGroups[0].description}
                       </p>
-                      <img
-                        src="/img/placeholder.png"
-                        alt={`Imagen de ${service.name}`}
-                        className="mt-3 h-44 w-full rounded-lg object-cover"
-                      />
-                      <p className="mt-3 text-primary-700 dark:text-primary-200">
-                        {service.detail}
-                      </p>
-                    </article>
-                  ))}
-                </div>
 
-                <div className="mt-7 grid grid-cols-3 gap-4 rounded-xl border border-primary-300/35 bg-primary-200/55 p-4 text-center dark:border-primary-200/20 dark:bg-primary-800/45">
-                  <div>
-                    <p className="text-3xl font-black text-primary-700 dark:text-primary-100">
-                      +1.200
-                    </p>
-                    <p className="text-sm text-primary-600 dark:text-primary-300">
-                      Tatuajes realizados
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-3xl font-black text-primary-700 dark:text-primary-100">
-                      98%
-                    </p>
-                    <p className="text-sm text-primary-600 dark:text-primary-300">
-                      Clientes recurrentes
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-3xl font-black text-primary-700 dark:text-primary-100">
-                      4.9/5
-                    </p>
-                    <p className="text-sm text-primary-600 dark:text-primary-300">
-                      Valoración media
-                    </p>
-                  </div>
+                      <div className="mt-6 relative min-h-125 overflow-hidden rounded-2xl border border-primary-300/35 bg-primary-950/25 dark:border-primary-200/15 dark:bg-primary-950/25">
+                        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-40 bg-linear-to-b from-primary-900/90 via-primary-900/55 to-transparent" />
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-52 bg-linear-to-t from-primary-900/95 via-primary-900/70 to-transparent" />
+
+                        <div className="absolute inset-x-0 top-0 z-20 p-4 md:p-5">
+                          <div className="flex flex-wrap gap-2">
+                            {tattooTechniques.map((technique, index) => {
+                              const isActive =
+                                index === safeActiveTechniqueIndex;
+
+                              return (
+                                <button
+                                  key={technique.id}
+                                  type="button"
+                                  onClick={() => setActiveTechniqueIndex(index)}
+                                  className={`rounded-full border px-3 py-2 text-sm font-semibold backdrop-blur-lg transition-colors hover:cursor-pointer ${
+                                    isActive
+                                      ? "border-primary-50 bg-primary-50 text-primary-400"
+                                      : "border-primary-50/35 bg-primary-950/35 text-primary-200"
+                                  }`}
+                                >
+                                  {technique.name}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        <div className="absolute inset-x-0 bottom-0 z-20 p-5 md:p-6">
+                          <div className="flex items-end justify-between gap-4">
+                            <div>
+                              <h4 className="mt-3 text-3xl text-primary-300 text-primary-50 md:text-4xl font-bold">
+                                {activeTechnique.name}
+                              </h4>
+                            </div>
+                            <span className="text-sm font-semibold text-primary-200/90">
+                              {String(safeActiveTechniqueIndex + 1).padStart(
+                                2,
+                                "0",
+                              )}{" "}
+                              /{" "}
+                              {String(tattooTechniques.length).padStart(2, "0")}
+                            </span>
+                          </div>
+                          <p className="mt-3 max-w-2xl text-base text-primary-100 md:text-lg">
+                            {activeTechnique.description}
+                          </p>
+                        </div>
+
+                        <Suspense
+                          fallback={
+                            <div className="h-full min-h-125 w-full bg-primary-900/30" />
+                          }
+                        >
+                          <Carousel
+                            images={tattooTechniques.map((technique) => ({
+                              id: technique.id,
+                              src: technique.image.src,
+                              srcSet: technique.image.srcSet,
+                              sizes: technique.image.sizes,
+                              title: technique.name,
+                            }))}
+                            className="h-full"
+                            autoDelayMs={7000}
+                            dots={false}
+                            activeIndex={safeActiveTechniqueIndex}
+                            onIndexChange={setActiveTechniqueIndex}
+                            slideClassName="h-full min-h-125 rounded-none"
+                            imageClassName="rounded-none shadow-none"
+                            activeScale={1}
+                            inactiveScale={1}
+                          />
+                        </Suspense>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article className="relative overflow-hidden rounded-2xl border border-primary-300/40 bg-primary-100/65 p-6 shadow-lg dark:border-primary-200/20 dark:bg-primary-900/55">
+                    <div
+                      className={`pointer-events-none absolute inset-0 bg-linear-to-br ${serviceGroups[1].accent}`}
+                      aria-hidden="true"
+                    />
+                    <div className="relative z-10">
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-500 dark:text-primary-300">
+                        {serviceGroups[1].eyebrow}
+                      </p>
+                      <h3 className="mt-3 text-2xl font-bold text-primary-700 dark:text-primary-100 md:text-3xl">
+                        {serviceGroups[1].title}
+                      </h3>
+                      <p className="mt-3 max-w-2xl text-primary-700 dark:text-primary-200">
+                        {serviceGroups[1].description}
+                      </p>
+
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        {serviceGroups[1].items.map((item) => (
+                          <span
+                            key={item}
+                            className="rounded-full border border-primary-400/35 bg-primary-50/75 px-4 py-2 text-sm font-semibold text-primary-700 shadow-sm dark:border-primary-200/20 dark:bg-primary-950/35 dark:text-primary-100"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                      <Suspense
+                        fallback={
+                          <div className="my-10 h-75 w-full bg-primary-900/20" />
+                        }
+                      >
+                        <Carousel
+                          images={stillBurningHeroImages.map((technique) => ({
+                            id: technique.id,
+                            src: technique.src,
+                            srcSet: technique.srcSet,
+                            sizes: technique.sizes,
+                          }))}
+                          className="h-full my-10"
+                          autoDelayMs={7000}
+                          dots={false}
+                          activeIndex={safeActiveTechniqueIndex}
+                          onIndexChange={setActiveTechniqueIndex}
+                          slideClassName="h-full rounded-none"
+                          imageClassName="rounded-none shadow-none"
+                          activeScale={1}
+                          inactiveScale={1}
+                        />
+                      </Suspense>
+                    </div>
+                  </article>
                 </div>
               </div>
             )}
 
             {section.id === "estudio" && (
-              <div className="w-full max-w-6xl px-6">
-                <Carousel images={galleryImagesBySelection.first} />
+              <div className="relative flex items-center justify-center min-h-screen w-full px-6">
+                <div
+                  className="absolute inset-0 w-full h-full z-0 pointer-events-none"
+                  style={{
+                    backgroundImage: "url(/img/flame-frame.svg)",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                    opacity: 1,
+                    mixBlendMode: "normal",
+                  }}
+                  aria-hidden="true"
+                />
+                <div className="relative z-10 w-3/4 mx-auto">
+                  <h2 className="absolute inset-0 flex items-center justify-center text-3xl font-bold text-primary-100">
+                    HARD TATTOOS FOR HARDER PEOPLE
+                  </h2>
+                  <Suspense
+                    fallback={<div className="h-75 w-full bg-primary-900/20" />}
+                  >
+                    <Carousel images={galleryImagesBySelection.first} />
+                  </Suspense>
+                </div>
               </div>
             )}
 
             {section.id === "contact" && (
-              <>
-                <div className="w-2/3 flex flex-col items-center">
-                  <div className="relative w-200 mb-10 overflow-hidden rounded-xl border border-primary-200/25 bg-primary-900/45">
-                    <div className="pointer-events-none absolute inset-0 z-10 bg-primary-900/30" />
-                    <div className="pointer-events-none absolute inset-x-0 top-0 z-15 h-42 bg-linear-to-b from-primary-900/90 via-primary-900/75 to-transparent" />
+              <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+                <div
+                  className="pointer-events-none absolute inset-0 z-0 bg-[url('/img/fondo-llamas-contacto.webp')] bg-cover bg-center bg-no-repeat"
+                  aria-hidden="true"
+                />
+                <div className="pointer-events-none absolute inset-0 z-0 bg-primary-950/45" />
 
-                    <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-6 text-center">
-                      <h2 className="mb-2 text-3xl font-bold text-primary-100">
-                        Nos encontramos en:{" "}
-                        <span>Plaza de la Libertad 3 Local 7B</span>
-                      </h2>
-                      <h3 className="text-2xl font-semibold text-primary-200">
-                        San Pedro Alcántara
-                      </h3>
-                    </div>
+                <div className="relative z-10 w-full max-w-7xl overflow-hidden rounded-2xl px-6 py-6 grid grid-cols-2 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] xl:grid-rows-[auto_auto]">
+                  <div className="relative z-10 col-span-2 xl:col-span-1 xl:row-start-1">
+                    <div className="relative w-full overflow-hidden rounded-xl border border-primary-200/25 bg-primary-900/45">
+                      <div className="pointer-events-none absolute inset-0 z-10 bg-primary-900/30" />
+                      <div className="pointer-events-none absolute inset-x-0 top-0 z-15 h-42 bg-linear-to-b from-primary-900/90 via-primary-900/75 to-transparent" />
 
-                    <div className="relative z-0">
-                      <SwipeCarousel
-                        images={galleryImagesBySelection.first}
-                        dots={false}
-                      />
+                      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-6 text-center">
+                        <h2 className="mb-2 text-3xl font-bold text-primary-100">
+                          Nos encontramos en:{" "}
+                          <span>Plaza de la Libertad 3 Local 7B</span>
+                        </h2>
+                        <h3 className="text-2xl font-semibold text-primary-200">
+                          San Pedro Alcántara
+                        </h3>
+                      </div>
+
+                      <div className="relative z-0">
+                        <Suspense
+                          fallback={
+                            <div className="h-75 w-full bg-primary-900/20" />
+                          }
+                        >
+                          <SwipeCarousel
+                            images={galleryImagesBySelection.first}
+                            dots={false}
+                          />
+                        </Suspense>
+                      </div>
                     </div>
                   </div>
 
-                  <Map height={300} />
+                  <div className="relative z-10 col-span-1 xl:col-span-1 xl:row-start-2 flex items-center justify-center">
+                    <div className="w-full max-w-140">
+                      <Suspense
+                        fallback={
+                          <div className="h-75 w-full rounded-lg bg-primary-900/25" />
+                        }
+                      >
+                        <Map height={300} />
+                      </Suspense>
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 col-span-1 xl:col-span-1 xl:row-span-2 xl:row-start-1 flex items-center justify-center">
+                    <Suspense fallback={<div className="h-full w-full" />}>
+                      <RevealLinks />
+                    </Suspense>
+                  </div>
                 </div>
-                <RevealLinks />
-              </>
+              </div>
             )}
           </motion.section>
         );

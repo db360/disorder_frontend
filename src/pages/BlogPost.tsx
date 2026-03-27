@@ -5,6 +5,7 @@ import LoadingSpinner from "../ui/LoadingSpinner";
 import useSEO from "../hooks/useSEO";
 import Error from "./Error";
 import Carousel from "../ui/Carousel";
+import { normalizeWordPressSrcSet, normalizeWordPressUrl } from "../lib/normalizeWordPressUrl";
 
 type PostContentBlock =
   | {
@@ -112,8 +113,8 @@ export default function BlogPost() {
 
             return {
               id: img.getAttribute("data-id") || `post-gallery-${index}-image-${imageIndex}`,
-              src,
-              srcSet: img.getAttribute("srcset")?.trim() || undefined,
+              src: normalizeWordPressUrl(src),
+              srcSet: normalizeWordPressSrcSet(img.getAttribute("srcset")?.trim() || undefined),
               sizes: img.getAttribute("sizes")?.trim() || undefined,
               title: img.getAttribute("alt")?.trim() || post.title,
             };
@@ -158,7 +159,7 @@ export default function BlogPost() {
 
         {post.featuredImage?.sourceUrl ? (
           <img
-            src={post.featuredImage.sourceUrl}
+            src={normalizeWordPressUrl(post.featuredImage.sourceUrl)}
             alt={post.featuredImage.altText ?? post.title}
             className="mt-6 max-h-130 w-full rounded-xl object-cover"
             loading="eager"
@@ -175,7 +176,7 @@ export default function BlogPost() {
             return (
               <div
                 key={block.id}
-                className="prose prose-lg max-w-none text-primary-700 dark:prose-invert dark:text-primary-200"
+                className="wp-content"
                 dangerouslySetInnerHTML={{ __html: block.html }}
               />
             );

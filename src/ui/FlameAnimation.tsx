@@ -33,7 +33,7 @@ export default function FlameAnimation({
   const frameRef = useRef(0);
   const [frame, setFrame] = useState(0);
   const [isPlaying, setIsPlaying] = useState(autoPlay);
-  const [speed, setSpeed] = useState(fps);
+  const speed = fps;
   const [resolvedFrameWidth, setResolvedFrameWidth] = useState(frameWidth ?? 0);
   const [resolvedFrameHeight, setResolvedFrameHeight] = useState(frameHeight ?? 0);
   const [isReady, setIsReady] = useState(false);

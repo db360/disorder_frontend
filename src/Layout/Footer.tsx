@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import usePages from "../hooks/usePages";
+import { contactEmail, whatsappNumber } from "../config/site";
 
 export default function Footer() {
   const { pages, loading, error } = usePages();
@@ -23,10 +24,45 @@ export default function Footer() {
           )}
           {!error && !loading && (
             <ul className="space-y-2 text-primary-800 dark:text-primary-100">
-              {pages
-                .slice()
-                .sort((a, b) => (a.menuOrder ?? 0) - (b.menuOrder ?? 0))
-                .map((page) => (
+              {(() => {
+                const wpItems = pages
+                  .filter((page) => page.slug !== "inicio")
+                  .slice()
+                  .sort((a, b) => (a.menuOrder ?? 0) - (b.menuOrder ?? 0));
+                const staticItems = [
+                  {
+                    id: "static-blog-link",
+                    slug: "blogs",
+                    title: "Blogs",
+                    menuOrder: 90,
+                  },
+                  {
+                    id: "static-site-map-link",
+                    slug: "mapa-del-sitio",
+                    title: "Mapa del sitio",
+                    menuOrder: 91,
+                  },
+                  {
+                    id: "static-accesibilidad-link",
+                    slug: "declaracion-accesibilidad",
+                    title: "Declaracion de accesibilidad",
+                    menuOrder: 92,
+                  },
+               
+                ];
+
+                const menuItems = [...wpItems];
+
+                staticItems.forEach((item) => {
+                  if (!menuItems.some((menuItem) => menuItem.slug === item.slug)) {
+                    menuItems.push(item);
+                  }
+                });
+
+                return menuItems
+                  .slice()
+                  .sort((a, b) => (a.menuOrder ?? 0) - (b.menuOrder ?? 0))
+                  .map((page) => (
                   <li key={page.id}>
                     <Link
                       to={`/${page.slug}`}
@@ -35,7 +71,8 @@ export default function Footer() {
                       {page.title}
                     </Link>
                   </li>
-                ))}
+                ));
+              })()}
             </ul>
           )}
         </div>
@@ -46,13 +83,13 @@ export default function Footer() {
           </h3>
           <div className="text-primary-700 dark:text-primary-200 space-y-2">
             <p>Escribinos para pedidos, colaboraciones o dudas.</p>
-            <p className="text-sm">Email: info@disorderunderground.com</p>
-            <p className="text-sm">WhatsApp: +34 623 61 29 05</p>
+            <p className="text-sm">Email: {contactEmail}</p>
+            <p className="text-sm">WhatsApp: {whatsappNumber}</p>
           </div>
         </div>
       </div>
 
-    
+
 
          {/* Copyright */}
 
