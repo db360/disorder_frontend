@@ -160,6 +160,8 @@ export default function BlogPost() {
         {post.featuredImage?.sourceUrl ? (
           <img
             src={normalizeWordPressUrl(post.featuredImage.sourceUrl)}
+            srcSet={post.featuredImage.srcSet}
+            sizes="(min-width: 1040px) 872px, 100vw"
             alt={post.featuredImage.altText ?? post.title}
             className="mt-6 max-h-130 w-full rounded-xl object-cover"
             loading="eager"

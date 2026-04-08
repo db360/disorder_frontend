@@ -23,7 +23,7 @@ export default function Footer() {
             </p>
           )}
           {!error && !loading && (
-            <ul className="space-y-2 text-primary-800 dark:text-primary-100">
+              <ul className="text-primary-800 dark:text-primary-100 grid gap-x-6 gap-y-2 [@media(min-width:1250px)]:grid-cols-2">
               {(() => {
                 const wpItems = pages
                   .filter((page) => page.slug !== "inicio")
@@ -43,12 +43,30 @@ export default function Footer() {
                     menuOrder: 91,
                   },
                   {
+                    id: "static-aviso-legal-link",
+                    slug: "aviso-legal",
+                    title: "Aviso legal",
+                    menuOrder: 92,
+                  },
+                  {
+                    id: "static-politica-privacidad-link",
+                    slug: "politica-de-privacidad",
+                    title: "Politica de privacidad",
+                    menuOrder: 93,
+                  },
+                  {
+                    id: "static-terminos-link",
+                    slug: "terminos-y-condiciones",
+                    title: "Terminos y condiciones",
+                    menuOrder: 94,
+                  },
+                  {
                     id: "static-accesibilidad-link",
                     slug: "declaracion-accesibilidad",
                     title: "Declaracion de accesibilidad",
-                    menuOrder: 92,
+                    menuOrder: 99,
                   },
-               
+
                 ];
 
                 const menuItems = [...wpItems];
@@ -81,10 +99,30 @@ export default function Footer() {
           <h3 className="text-xl font-beatstreet text-primary-900 dark:text-primary-100">
             Contacto
           </h3>
-          <div className="text-primary-700 dark:text-primary-200 space-y-2">
-            <p>Escribinos para pedidos, colaboraciones o dudas.</p>
-            <p className="text-sm">Email: {contactEmail}</p>
-            <p className="text-sm">WhatsApp: {whatsappNumber}</p>
+          <p className="text-sm text-primary-800 dark:text-primary-200">
+            Escribinos para pedidos, colaboraciones o dudas.
+          </p>
+          <div className="space-y-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">Email</p>
+              <p className="text-sm text-primary-900 dark:text-primary-100">{contactEmail}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">WhatsApp</p>
+              <p className="text-sm text-primary-900 dark:text-primary-100">{whatsappNumber}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">Dirección</p>
+              <p className="text-sm text-primary-900 dark:text-primary-100">
+                Plaza de la Libertad 3, Local 7B<br />San Pedro Alcántara
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">Horario</p>
+              <p className="text-sm text-primary-900 dark:text-primary-100">
+                Lun – Vie: 10:00 – 14:00 / 17:00 – 20:00
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -94,8 +132,8 @@ export default function Footer() {
          {/* Copyright */}
 
         <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
-            <span className="text-sm text-primary-700 dark:text-primary-300 text-center block">
-                © 2026 <a href="https://universoweb.es/" className="hover:underline">UniversoWeb | Con el ❤️ desde el Universo</a>. All Rights Reserved 2026.
+            <span className="text-sm text-primary-900 dark:text-primary-100 text-center block">
+                © 2026 <a href="https://universoweb.es/" className="text-primary-900 dark:text-primary-100 hover:underline">UniversoWeb | Con el ❤️ desde el Universo</a>. All Rights Reserved 2026.
             </span>
         </div>
       {/* Kit Digital section */}
@@ -108,7 +146,7 @@ export default function Footer() {
         <img
           src="/img/Kit-Digital-Banner.webp"
           alt="Kit Digital - Financiado por la Unión Europea"
-          className="w-full h-auto"
+          // className="w-full h-auto"
           width={2048}
           height={154}
           loading="lazy"

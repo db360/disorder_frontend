@@ -90,6 +90,8 @@ export default function Blog() {
                 {post.featuredImage?.sourceUrl ? (
                   <img
                     src={post.featuredImage.sourceUrl}
+                    srcSet={post.featuredImage.srcSet}
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                     alt={post.featuredImage.altText ?? post.title}
                     className="h-52 w-full object-cover"
                     loading="lazy"

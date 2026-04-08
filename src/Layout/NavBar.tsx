@@ -7,6 +7,40 @@ import HamburgerMenu from "../ui/HamburgerMenu";
 import logoVideoMp4 from "../assets/videos/logo-navbar.mp4";
 import logoVideoWebm from "../assets/videos/logo-navbar.webm";
 
+const LEGAL_SLUG_PATTERNS = [
+  "aviso-legal",
+  "politica",
+  "privacidad",
+  "terminos",
+  "condiciones",
+  "declaracion-accesibilidad",
+];
+
+const LEGAL_TITLE_PATTERNS = [
+  "aviso legal",
+  "politica",
+  "privacidad",
+  "terminos",
+  "condiciones",
+  "declaracion de accesibilidad",
+];
+
+const normalize = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+const isLegalPage = (slug?: string, title?: string) => {
+  const normalizedSlug = normalize(slug ?? "");
+  const normalizedTitle = normalize(title ?? "");
+
+  return (
+    LEGAL_SLUG_PATTERNS.some((pattern) => normalizedSlug.includes(pattern)) ||
+    LEGAL_TITLE_PATTERNS.some((pattern) => normalizedTitle.includes(pattern))
+  );
+};
+
 export default function NavBar() {
   const { pages, loading, error } = usePages();
   const [hidden, setHidden] = useState(false);
@@ -21,7 +55,7 @@ export default function NavBar() {
     const wpItems = pages
       .filter(
         (page) =>
-          page.slug !== "inicio" && page.slug !== "declaracion-accesibilidad",
+          page.slug !== "inicio" && !isLegalPage(page.slug, page.title),
       )
       .slice()
       .sort((a, b) => (a.menuOrder ?? 0) - (b.menuOrder ?? 0));
@@ -112,8 +146,10 @@ export default function NavBar() {
       animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
       style={{ pointerEvents: hidden ? "none" : "auto" }}
+      aria-hidden={hidden}
+      inert={hidden}
     >
-      <motion.nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between font-beatstreet">
+      <motion.nav aria-label="Navegación principal" className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between font-beatstreet">
         {/* Left: Logo (20%) */}
         <div className="basis-1/5 flex items-center justify-start cursor-pointer">
           <Link to="/" className="flex items-center" aria-label={logoAlt}>

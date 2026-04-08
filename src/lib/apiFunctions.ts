@@ -51,6 +51,7 @@ export type BlogPostListItem = {
   featuredImage?: {
     sourceUrl: string;
     altText: string | null;
+    srcSet?: string;
   };
 };
 
@@ -74,7 +75,20 @@ export type BlogPostDetail = {
   featuredImage?: {
     sourceUrl: string;
     altText: string | null;
+    srcSet?: string;
   };
+};
+
+type PostFeaturedImageNode = {
+  sourceUrl?: string | null;
+  altText?: string | null;
+  mediaDetails?: {
+    width?: number | null;
+    sizes?: Array<{
+      sourceUrl?: string | null;
+      width?: string | null;
+    } | null> | null;
+  } | null;
 };
 
 type GetPostBySlugQuery = {
@@ -87,10 +101,7 @@ type GetPostBySlugQuery = {
     date?: string | null;
     seo?: BlogPostDetail["seo"];
     featuredImage?: {
-      node?: {
-        sourceUrl?: string | null;
-        altText?: string | null;
-      } | null;
+      node?: PostFeaturedImageNode | null;
     } | null;
   } | null;
 };
@@ -108,10 +119,7 @@ type GetPostsListQuery = {
       excerpt?: string | null;
       date?: string | null;
       featuredImage?: {
-        node?: {
-          sourceUrl?: string | null;
-          altText?: string | null;
-        } | null;
+        node?: PostFeaturedImageNode | null;
       } | null;
     } | null> | null;
   } | null;
@@ -280,19 +288,27 @@ export const getAllPosts = async (first = 20): Promise<BlogPostListItem[]> => {
       (post): post is NonNullable<typeof post> => Boolean(post)
     );
 
-    return nodes.map((post) => ({
-      id: post.id,
-      slug: post.slug ?? "",
-      title: post.title ?? "",
-      excerpt: post.excerpt ?? "",
-      date: post.date ?? null,
-      featuredImage: post.featuredImage?.node?.sourceUrl
-        ? {
-            sourceUrl: normalizeWordPressUrl(post.featuredImage.node.sourceUrl),
-            altText: post.featuredImage.node.altText ?? null,
-          }
-        : undefined,
-    }));
+    return nodes.map((post) => {
+      const imgNode = post.featuredImage?.node;
+      return {
+        id: post.id,
+        slug: post.slug ?? "",
+        title: post.title ?? "",
+        excerpt: post.excerpt ?? "",
+        date: post.date ?? null,
+        featuredImage: imgNode?.sourceUrl
+          ? {
+              sourceUrl: normalizeWordPressUrl(imgNode.sourceUrl),
+              altText: imgNode.altText ?? null,
+              srcSet: buildSrcSetFromMediaItem({
+                databaseId: 0,
+                sourceUrl: imgNode.sourceUrl,
+                mediaDetails: imgNode.mediaDetails,
+              }) || undefined,
+            }
+          : undefined,
+      };
+    });
   } catch (e) {
     console.error("Error loading posts:", e);
     return [];
@@ -312,18 +328,35 @@ export const getPostBySlug = async (slug: string): Promise<BlogPostDetail | null
       return null;
     }
 
+    const imgNode = post.featuredImage?.node;
+    const content = post.content ?? "";
+
+    const imageIds = extractWordPressImageIds(content);
+    let processedContent = content;
+    if (imageIds.length > 0) {
+      const mediaById = await getMediaItemsByIds(imageIds);
+      if (mediaById.size > 0) {
+        processedContent = injectSrcSetInHtmlContent(content, mediaById);
+      }
+    }
+
     return {
       id: post.id,
       slug: post.slug ?? "",
       title: post.title ?? "",
-      content: post.content ?? "",
+      content: processedContent,
       excerpt: post.excerpt ?? "",
       date: post.date ?? null,
       seo: post.seo ?? null,
-      featuredImage: post.featuredImage?.node?.sourceUrl
+      featuredImage: imgNode?.sourceUrl
         ? {
-            sourceUrl: normalizeWordPressUrl(post.featuredImage.node.sourceUrl),
-            altText: post.featuredImage.node.altText ?? null,
+            sourceUrl: normalizeWordPressUrl(imgNode.sourceUrl),
+            altText: imgNode.altText ?? null,
+            srcSet: buildSrcSetFromMediaItem({
+              databaseId: 0,
+              sourceUrl: imgNode.sourceUrl,
+              mediaDetails: imgNode.mediaDetails,
+            }) || undefined,
           }
         : undefined,
     };

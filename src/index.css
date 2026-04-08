@@ -37,6 +37,8 @@
 	--nav-height: 80px;
 
 	--disorder-yellow: #FDF399;
+
+	scroll-padding-top: var(--navbar-height, 80px);
 }
 
 .dark {

@@ -100,7 +100,7 @@ export default function Equipo() {
 
     return (
         <div className="page-with-navbar px-6 py-10 space-y-12 mt-10">
-            <h1 className="text-4xl sm:text-5xl font-bold text-primary-600 dark:text-white text-center">
+            <h1 className="text-4xl sm:text-5xl font-bold text-primary-100 dark:text-white text-center">
                 {page?.title ?? "Nuestro equipo"}
             </h1>
 
@@ -121,13 +121,13 @@ export default function Equipo() {
                 return (
                     <section
                         key={artist.name}
-                        className="max-w-5xl mx-auto rounded-xl border border-primary-300/30 dark:border-primary-200/20 p-6 sm:p-8"
+                        className="max-w-5xl mx-auto rounded-xl border border-primary-300/30 dark:border-primary-200/20 bg-primary-900/35 p-6 sm:p-8"
                     >
                         <h2 className="text-3xl font-bold text-primary-100 dark:text-white">{artist.name}</h2>
 
                         {artist.leadTitleHtml && (
                             <div
-                                className="mt-4 text-2xl font-bold leading-tight dark:text-primary-400 sm:text-3xl"
+                                className="mt-4 text-2xl font-bold leading-tight text-primary-100 dark:text-primary-400 sm:text-3xl"
                                 dangerouslySetInnerHTML={{ __html: artist.leadTitleHtml }}
                             />
                         )}
@@ -136,6 +136,8 @@ export default function Equipo() {
                             <div className="mt-6 overflow-hidden rounded-2xl border border-primary-300/30 dark:border-primary-200/20">
                                 <img
                                     src={normalizeWordPressUrl(artist.leadImage.src)}
+                                    srcSet={artist.leadImage.srcSet}
+                                    sizes={artist.leadImage.sizes ?? "(min-width: 768px) 50vw, 100vw"}
                                     alt={artist.leadImage.alt || artist.name}
                                     className="w-2/3 h-80 mx-auto object-contain"
                                     loading="lazy"
@@ -145,7 +147,7 @@ export default function Equipo() {
 
                         {artist.descriptionHtml && (
                             <div
-                                className="wp-content mt-6"
+                                className="wp-content mt-6 text-primary-100 **:text-primary-100"
                                 dangerouslySetInnerHTML={{ __html: artist.descriptionHtml }}
                             />
                         )}

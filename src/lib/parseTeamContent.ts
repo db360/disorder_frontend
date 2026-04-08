@@ -5,11 +5,13 @@ export type ParsedTeamArtist = {
   leadImage?: {
     src: string;
     alt: string;
+    srcSet?: string;
+    sizes?: string;
   };
   gallerySlug?: string;
 };
 
-import { normalizeWordPressUrl } from "./normalizeWordPressUrl";
+import { normalizeWordPressSrcSet, normalizeWordPressUrl } from "./normalizeWordPressUrl";
 
 const isArtistHeading = (element: Element) =>
   element.tagName.toLowerCase() === "h2" &&
@@ -57,6 +59,8 @@ const normalizeArtistContent = (html: string) => {
     ? {
         src: normalizeWordPressUrl(leadImageElement.getAttribute("src") || ""),
         alt: leadImageElement.getAttribute("alt") || "",
+        srcSet: normalizeWordPressSrcSet(leadImageElement.getAttribute("srcset") || undefined),
+        sizes: leadImageElement.getAttribute("sizes") || undefined,
       }
     : undefined;
 

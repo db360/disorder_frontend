@@ -232,15 +232,16 @@ export default function ImageTrail({
       ref={containerRef}
     >
       <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-6 text-center">
-        <h2 className="text-4xl font-black tracking-wide text-primary-900 dark:text-primary-200 sm:text-5xl md:text-6xl lg:text-7xl">
+        <h1 className="text-4xl font-black tracking-wide text-primary-900 dark:text-primary-200 sm:text-5xl md:text-6xl lg:text-7xl">
           {centerText}
-        </h2>
+        </h1>
       </div>
 
       {items.map((url, i) => (
         <div
           className="content__img absolute top-0 left-0 aspect-[1.1] w-72 overflow-hidden rounded-[15px] opacity-0 will-change-[transform,filter] z-10"
           key={i}
+          aria-hidden="true"
         >
           <img
             src={url}

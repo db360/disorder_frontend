@@ -12,7 +12,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
   <main className="min-h-screen bg-primary-100 dark:bg-primary-500 transition-colors">
     {children}
   </main>
-  <WhatsAppButton />
+  <aside aria-label="Contacto rápido">
+    <WhatsAppButton />
+  </aside>
   {/* <div className="fixed bottom-0 left-0 w-full pointer-events-none z-99">
     <video
       className="w-full h-32 sm:h-36 md:h-40 object-cover"

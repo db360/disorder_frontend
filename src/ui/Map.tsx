@@ -2,12 +2,15 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Link } from "react-router-dom";
 import L from "leaflet";
+import iconUrl from "leaflet/dist/images/marker-icon.png";
+import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 
-// Forzar la ruta de los iconos de Leaflet usando rutas absolutas desde public/
+// Forzar la ruta de los iconos de Leaflet usando imports estáticos (compatibles con Vite build)
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "/marker-icon-2x.png",
-  iconUrl: "/marker-icon.png",
-  shadowUrl: "/marker-shadow.png",
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
 });
 
 type MapProps = {

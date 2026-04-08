@@ -127,13 +127,20 @@ export const GET_POSTS = gql`
         date
         featuredImage {
           node {
-            ...MediaBasicFields
+            sourceUrl
+            altText
+            mediaDetails {
+              width
+              sizes {
+                sourceUrl
+                width
+              }
+            }
           }
         }
       }
     }
   }
-  ${MEDIA_BASIC_FIELDS}
 `;
 
 
@@ -199,10 +206,17 @@ export const GET_POST_BY_SLUG = gql`
       }
       featuredImage {
         node {
-          ...MediaBasicFields
+          sourceUrl
+          altText
+          mediaDetails {
+            width
+            sizes {
+              sourceUrl
+              width
+            }
+          }
         }
       }
     }
   }
-  ${MEDIA_BASIC_FIELDS}
 `;

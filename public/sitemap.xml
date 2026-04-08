@@ -8,19 +8,31 @@
   </url>
   <url>
     <loc>https://www.disorderunderground.es/blogs</loc>
-    <lastmod>2026-03-27T10:43:38.950Z</lastmod>
+    <lastmod>2026-04-08T16:38:00.438Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.disorderunderground.es/mapa-del-sitio</loc>
-    <lastmod>2026-03-27T10:43:38.950Z</lastmod>
+    <lastmod>2026-04-08T16:38:00.438Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://www.disorderunderground.es/terminos-y-condiciones</loc>
+    <lastmod>2026-03-27T10:42:09.000Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.disorderunderground.es/aviso-legal</loc>
+    <lastmod>2026-03-27T10:42:03.000Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.disorderunderground.es/declaracion-accesibilidad</loc>
-    <lastmod>2026-03-06T11:00:57.000Z</lastmod>
+    <lastmod>2026-03-27T10:14:28.000Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -32,7 +44,7 @@
   </url>
   <url>
     <loc>https://www.disorderunderground.es/estudio</loc>
-    <lastmod>2026-03-23T19:58:49.000Z</lastmod>
+    <lastmod>2026-03-27T10:15:32.000Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -44,7 +56,7 @@
   </url>
   <url>
     <loc>https://www.disorderunderground.es/nuestro-equipo</loc>
-    <lastmod>2026-03-20T09:16:52.000Z</lastmod>
+    <lastmod>2026-03-27T10:14:02.000Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

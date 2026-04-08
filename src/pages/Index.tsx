@@ -16,6 +16,7 @@ const StillBurningAnimatedHero = lazy(
 const Carousel = lazy(() => import("../ui/Carousel"));
 const SwipeCarousel = lazy(() => import("../ui/Carousel"));
 const RevealLinks = lazy(() => import("../ui/RevealLinks"));
+const ScrollToTop = lazy(() => import("../ui/ScrollToTop"));
 
 export default function Index() {
   // Activar scroll snap solo en desktop para evitar problemas en móvil
@@ -248,15 +249,17 @@ export default function Index() {
   if (!page) return <LoadingSpinner />;
 
   return (
-    <div className="home-sections">
+    <>
+      <div className="home-sections">
       {sections.map((section) => {
         const isHero = section.id === "hero";
+        const isContact = section.id === "contact";
 
         return (
           <motion.section
             key={section.id}
             id={section.id}
-            className={`home-section flex justify-center ${isHero ? "items-end overflow-hidden relative" : "items-center"}`}
+            className={`home-section flex justify-center ${isHero ? "items-end overflow-hidden relative" : "items-center"} ${isContact ? "relative bg-[url('/img/fondo-llamas-contacto.webp')] bg-cover bg-center bg-no-repeat" : ""}`}
             initial={false}
             animate={{ opacity: 1, y: 0 }}
           >
@@ -291,34 +294,12 @@ export default function Index() {
                     className="mx-auto mt-10 xl:mt-5 w-1/2 h-auto rounded-lg object-contain"
                   />
                 </div>
-                {/* <div className="max-w-3xl mx-auto space-y-6 px-8 text-center border-primary-100/50 border-2 rounded-lg py-6 bg-linear-to-br from-primary-100 via-primary-200 to-primary-300 dark:from-primary-700 dark:via-primary-600 dark:to-primary-500 shadow-2xl">
-                  {parsedContent.paragraphs.map((paragraph, paragraphIndex) => (
-                    <FallingText
-                      key={`${section.id}-paragraph-${paragraphIndex}-falling`}
-                      text={paragraph}
-                      highlightWords={[
-                        "tatuajes",
-                        "superguapa",
-                        "verdad",
-                        "buena",
-                        "duros",
-                      ]}
-                      highlightClass="highlighted"
-                      trigger="button"
-                      backgroundColor="transparent"
-                      wireframes={false}
-                      gravity={1.27}
-                      fontSize="2rem"
-                      mouseConstraintStiffness={1.2}
-                    />
-                  ))}
 
-                </div> */}
               </div>
             )}
 
             {section.id === "intro" && (
-              <div className="relative min-h-125 md:min-h-125 flex items-center justify-center w-full">
+              <div className="relative self-stretch flex items-center justify-center w-full overflow-hidden">
                 <img
                   src="/img/espiral.svg"
                   alt="Espiral decorativa"
@@ -363,7 +344,7 @@ export default function Index() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.25fr_0.75fr]">
-                  <article className="relative overflow-hidden rounded-2xl border border-primary-300/40 bg-primary-100/65 p-6 shadow-lg dark:border-primary-200/20 dark:bg-primary-900/55">
+                  <div className="relative overflow-hidden rounded-2xl border border-primary-300/40 bg-primary-100/65 p-6 shadow-lg dark:border-primary-200/20 dark:bg-primary-900/55">
                     <div
                       className={`pointer-events-none absolute inset-0 bg-linear-to-br ${serviceGroups[0].accent}`}
                       aria-hidden="true"
@@ -454,9 +435,9 @@ export default function Index() {
                         </Suspense>
                       </div>
                     </div>
-                  </article>
+                  </div>
 
-                  <article className="relative overflow-hidden rounded-2xl border border-primary-300/40 bg-primary-100/65 p-6 shadow-lg dark:border-primary-200/20 dark:bg-primary-900/55">
+                  <div className="relative overflow-hidden rounded-2xl border border-primary-300/40 bg-primary-100/65 p-6 shadow-lg dark:border-primary-200/20 dark:bg-primary-900/55">
                     <div
                       className={`pointer-events-none absolute inset-0 bg-linear-to-br ${serviceGroups[1].accent}`}
                       aria-hidden="true"
@@ -506,7 +487,7 @@ export default function Index() {
                         />
                       </Suspense>
                     </div>
-                  </article>
+                  </div>
                 </div>
               </div>
             )}
@@ -525,8 +506,8 @@ export default function Index() {
                   }}
                   aria-hidden="true"
                 />
-                <div className="relative z-10 w-3/4 mx-auto">
-                  <h2 className="absolute inset-0 flex items-center justify-center text-3xl font-bold text-primary-100">
+                <div className="relative z-10 w-3/4 mx-auto opacity-85">
+                  <h2 className="absolute inset-0 z-20 flex items-center justify-center text-5xl font-bold text-primary-100 shadow-2xl text-shadow-lg">
                     HARD TATTOOS FOR HARDER PEOPLE
                   </h2>
                   <Suspense
@@ -539,16 +520,12 @@ export default function Index() {
             )}
 
             {section.id === "contact" && (
-              <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
-                <div
-                  className="pointer-events-none absolute inset-0 z-0 bg-[url('/img/fondo-llamas-contacto.webp')] bg-cover bg-center bg-no-repeat"
-                  aria-hidden="true"
-                />
+              <div className="relative flex w-full items-center justify-center py-8">
                 <div className="pointer-events-none absolute inset-0 z-0 bg-primary-950/45" />
 
-                <div className="relative z-10 w-full max-w-7xl overflow-hidden rounded-2xl px-6 py-6 grid grid-cols-2 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] xl:grid-rows-[auto_auto]">
-                  <div className="relative z-10 col-span-2 xl:col-span-1 xl:row-start-1">
-                    <div className="relative w-full overflow-hidden rounded-xl border border-primary-200/25 bg-primary-900/45">
+                <div className="relative z-10 w-full max-w-4xl xl:max-w-6xl rounded-2xl px-6 py-6 grid grid-cols-1 sm:grid-cols-2 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] xl:grid-rows-[auto_auto]">
+                  <div className="relative z-10 col-span-full xl:col-span-1 xl:row-start-1">
+                    <div className="relative w-full max-h-80 overflow-hidden rounded-xl border border-primary-200/25 bg-primary-900/45">
                       <div className="pointer-events-none absolute inset-0 z-10 bg-primary-900/30" />
                       <div className="pointer-events-none absolute inset-x-0 top-0 z-15 h-42 bg-linear-to-b from-primary-900/90 via-primary-900/75 to-transparent" />
 
@@ -601,5 +578,9 @@ export default function Index() {
         );
       })}
     </div>
+    <Suspense fallback={null}>
+      <ScrollToTop />
+    </Suspense>
+    </>
   );
 }
