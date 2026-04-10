@@ -266,32 +266,36 @@ export default function Index() {
             {section.id === "hero" && (
               <div className="absolute inset-0">
                 <div
-                  className="absolute inset-0 z-0 bg-[url('/img/trazos-fondo.svg')] bg-center bg-cover bg-no-repeat opacity-30"
+                  className="absolute inset-0 z-0 bg-[url('/img/trazos-fondo-900x400.webp')] md:bg-[url('/img/trazos-fondo.webp')] bg-center bg-cover bg-no-repeat opacity-30 brightness-40 dark:brightness-100"
                   aria-hidden="true"
                 />
 
                 <div className="relative z-10">
-                  <div className="mx-auto mt-62 xl:mt-35 h-[min(52.5vw,472px)] w-[min(40vw,360px)]">
+                  <h1 className="mx-auto mt-[clamp(3rem,12svh,8rem)] xl:mt-[clamp(6rem,14vh,9rem)] h-[min(85vw,472px)] w-[min(65vw,360px)] md:h-[min(52.5vw,472px)] md:w-[min(40vw,360px)]">
+                    <span className="sr-only">Disorder Underground Shop</span>
                     <Suspense fallback={<div className="h-full w-full" />}>
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.6, ease: "easeOut" }}
                         className="h-full w-full"
+                        aria-hidden="true"
                       >
                         <DisorderLogo className="h-full w-full" />
                       </motion.div>
                     </Suspense>
-                  </div>
+                  </h1>
                   <motion.img
                     src="/img/servicios-titulo.webp"
+                    srcSet="/img/servicios-titulo-600x94.webp 600w, /img/servicios-titulo.webp 1400w"
+                    sizes="(max-width: 767px) 80vw, 50vw"
                     alt="Tatuaje destacado"
-                    width={820}
-                    height={1024}
+                    width={1400}
+                    height={220}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, ease: "easeOut", delay: 0.12 }}
-                    className="mx-auto mt-10 xl:mt-5 w-1/2 h-auto rounded-lg object-contain"
+                    className="mx-auto mt-10 xl:mt-5 w-4/5 md:w-1/2 h-auto rounded-lg object-contain"
                   />
                 </div>
 
@@ -335,10 +339,10 @@ export default function Index() {
             {section.id === "services" && (
               <div className="w-full max-w-7xl px-6 mt-8 md:mt-10 lg:mt-0">
                 <div className="mb-10 text-center">
-                  <p className="text-sm uppercase tracking-[0.35em] text-primary-300 dark:text-primary-200">
+                  <p className="text-sm uppercase tracking-[0.35em] text-primary-900 dark:text-primary-200">
                     {section.subtitle}
                   </p>
-                  <h2 className="mt-2 text-4xl font-bold text-primary-700 dark:text-primary-100 md:text-5xl">
+                  <h2 className="mt-2 text-4xl font-bold text-primary-800 dark:text-primary-100 md:text-5xl">
                     {section.title}
                   </h2>
                 </div>
@@ -506,10 +510,10 @@ export default function Index() {
                   }}
                   aria-hidden="true"
                 />
-                <div className="relative z-10 w-3/4 mx-auto opacity-85">
-                  <h2 className="absolute inset-0 z-20 flex items-center justify-center text-5xl font-bold text-primary-100 shadow-2xl text-shadow-lg">
+                <div className="relative z-10 w-3/4 mx-auto opacity-95">
+                  <h3 className="absolute inset-0 z-20 flex items-center justify-center text-5xl font-bold text-primary-900 dark:text-primary-200 shadow-2xl text-shadow-lg font-beatstreet">
                     HARD TATTOOS FOR HARDER PEOPLE
-                  </h2>
+                  </h3>
                   <Suspense
                     fallback={<div className="h-75 w-full bg-primary-900/20" />}
                   >

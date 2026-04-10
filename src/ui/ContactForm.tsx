@@ -1,5 +1,66 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+
+// Hook: atrapa el foco dentro del modal y cierra con Escape
+function useFocusTrap(isOpen: boolean, onClose: () => void) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+
+    // Mover foco al primer elemento enfocable al abrir
+    useEffect(() => {
+        if (!isOpen) return;
+        const container = containerRef.current;
+        if (!container) return;
+        const focusable = container.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        focusable[0]?.focus();
+    }, [isOpen]);
+
+    // Trap Tab/Shift+Tab y cerrar con Escape
+    useEffect(() => {
+        if (!isOpen) return;
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                onClose();
+                return;
+            }
+            if (e.key !== "Tab") return;
+            const container = containerRef.current;
+            if (!container) return;
+            const focusable = Array.from(
+                container.querySelectorAll<HTMLElement>(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                )
+            ).filter((el) => !el.hasAttribute("disabled"));
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        };
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [isOpen, onClose]);
+
+    // Devolver foco al trigger al cerrar
+    useEffect(() => {
+        if (!isOpen) {
+            triggerRef.current?.focus();
+        }
+    }, [isOpen]);
+
+    return { containerRef, triggerRef };
+}
 
 const CF7_FORM_ID = "105";
 const WORDPRESS_BASE_URL = import.meta.env.VITE_WORDPRESS_URL;
@@ -29,6 +90,16 @@ export default function ContactForm() {
         setStatusMessage(null);
         setStatusType(null);
     };
+    const closePrivacyModal = () => setShowPrivacyModal(false);
+
+    const {
+        containerRef: privacyContainerRef,
+        triggerRef: privacyTriggerRef,
+    } = useFocusTrap(showPrivacyModal, closePrivacyModal);
+
+    const {
+        containerRef: successContainerRef,
+    } = useFocusTrap(showSuccessModal, closeSuccessModal);
 
     const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -96,81 +167,81 @@ export default function ContactForm() {
             <input type="hidden" name="_wpcf7" value={CF7_FORM_ID} />
             <input type="hidden" name="_wpcf7_unit_tag" value={unitTag} />
             <input type="hidden" name="_wpcf7_container_post" value="0" />
-            <div className="relative z-0 w-full mb-5 group">
+            <p className="mb-4 text-xs text-primary-700 dark:text-primary-300">
+                Los campos marcados con <span className="text-red-600 dark:text-red-400" aria-hidden="true">*</span> <span className="sr-only">(asterisco)</span> son obligatorios.
+            </p>
+            <div className="w-full mb-5">
+                <label
+                    htmlFor="your-name"
+                    className="block mb-1 text-sm font-medium text-primary-900 dark:text-primary-100"
+                >
+                    Tu nombre <span className="text-red-600 dark:text-red-400" aria-hidden="true">*</span>
+                </label>
                 <input
                     type="text"
                     name="your-name"
                     id="your-name"
-                    className="block py-2.5 px-0 w-full text-sm text-heading dark:text-primary-100 bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-                    placeholder=" "
+                    className="block py-2.5 px-3 w-full text-sm text-primary-900 dark:text-primary-100 bg-transparent rounded-lg border-2 border-primary-400 dark:border-primary-600 focus:outline-none focus:ring-0 focus:border-primary-500 dark:focus:border-primary-400"
                     required
                 />
-                <label
-                    htmlFor="your-name"
-                    className="absolute text-sm text-body dark:text-primary-100 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >
-                    Tu nombre
-                </label>
             </div>
-            <div className="relative z-0 w-full mb-5 group">
+            <div className="w-full mb-5">
+                <label
+                    htmlFor="your-email"
+                    className="block mb-1 text-sm font-medium text-primary-900 dark:text-primary-100"
+                >
+                    Tu correo electrónico <span className="text-red-600 dark:text-red-400" aria-hidden="true">*</span>
+                </label>
                 <input
                     type="email"
                     name="your-email"
                     id="your-email"
-                    className="block py-2.5 px-0 w-full text-sm text-heading dark:text-primary-100 bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-                    placeholder=" "
+                    className="block py-2.5 px-3 w-full text-sm text-primary-900 dark:text-primary-100 bg-transparent rounded-lg border-2 border-primary-400 dark:border-primary-600 focus:outline-none focus:ring-0 focus:border-primary-500 dark:focus:border-primary-400"
                     required
                 />
-                <label
-                    htmlFor="your-email"
-                    className="absolute text-sm text-body dark:text-primary-100 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >
-                    Tu correo electronico
-                </label>
             </div>
-            <div className="relative z-0 w-full mb-5 group">
+            <div className="w-full mb-5">
+                <label
+                    htmlFor="your-subject"
+                    className="block mb-1 text-sm font-medium text-primary-900 dark:text-primary-100"
+                >
+                    Asunto <span className="text-red-600 dark:text-red-400" aria-hidden="true">*</span>
+                </label>
                 <input
                     type="text"
                     name="your-subject"
                     id="your-subject"
-                    className="block py-2.5 px-0 w-full text-sm text-heading dark:text-primary-100 bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-                    placeholder=" "
+                    className="block py-2.5 px-3 w-full text-sm text-primary-900 dark:text-primary-100 bg-transparent rounded-lg border-2 border-primary-400 dark:border-primary-600 focus:outline-none focus:ring-0 focus:border-primary-500 dark:focus:border-primary-400"
                     required
                 />
-                <label
-                    htmlFor="your-subject"
-                    className="absolute text-sm text-body dark:text-primary-100 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >
-                    Asunto
-                </label>
             </div>
-            <div className="relative z-0 w-full mb-6 group">
+            <div className="w-full mb-6">
+                <label
+                    htmlFor="your-message"
+                    className="block mb-1 text-sm font-medium text-primary-900 dark:text-primary-100"
+                >
+                    Tu mensaje <span className="text-primary-600 dark:text-primary-300 font-normal">(opcional)</span>
+                </label>
                 <textarea
                     name="your-message"
                     id="your-message"
                     rows={4}
-                    className="block py-2.5 px-0 w-full text-sm text-heading dark:text-primary-100 bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer resize-none"
-                    placeholder=" "
+                    className="block py-2.5 px-3 w-full text-sm text-primary-900 dark:text-primary-100 bg-transparent rounded-lg border-2 border-primary-400 dark:border-primary-600 focus:outline-none focus:ring-0 focus:border-primary-500 dark:focus:border-primary-400 resize-none"
                 />
-                <label
-                    htmlFor="your-message"
-                    className="absolute text-sm text-body dark:text-primary-100 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >
-                    Tu mensaje (opcional)
-                </label>
             </div>
             <button
                 type="submit"
-                className="text-white bg-primary-500 box-border border border-transparent hover:bg-primary-600 hover:cursor-pointer focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none disabled:opacity-60 rounded-lg"
-       
+                className="text-white bg-primary-700 box-border border border-transparent hover:bg-primary-600 hover:cursor-pointer focus:ring-4 focus:ring-primary-300 shadow-xs font-medium leading-5 text-sm px-4 py-2.5 focus:outline-none disabled:opacity-70 rounded-lg"
+
                 disabled={isSubmitting}
             >
                 {isSubmitting ? "Enviando..." : "Enviar"}
             </button>
 
-            <p className="mt-4 text-sm text-primary-700 dark:text-primary-200">
+            <p className="mt-4 text-sm text-primary-900 dark:text-primary-200">
                 Al enviar este formulario aceptas nuestro tratamiento de datos para contacto. {" "}
                 <button
+                    ref={privacyTriggerRef}
                     type="button"
                     onClick={() => setShowPrivacyModal(true)}
                     className="font-semibold underline underline-offset-2 hover:cursor-pointer"
@@ -182,8 +253,8 @@ export default function ContactForm() {
             {statusType === "error" && statusMessage && (
                 <p
                     className="mt-4 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700"
-                    role="status"
-                    aria-live="polite"
+                    role="alert"
+                    aria-live="assertive"
                 >
                     {statusMessage}
                 </p>
@@ -196,8 +267,10 @@ export default function ContactForm() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        onClick={closePrivacyModal}
                     >
                         <motion.div
+                            ref={privacyContainerRef}
                             className="w-full max-w-lg rounded-2xl border border-primary-200/35 bg-primary-100 p-6 text-left shadow-2xl dark:border-primary-200/20 dark:bg-primary-900"
                             initial={{ opacity: 0, y: 24, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -206,6 +279,7 @@ export default function ContactForm() {
                             role="dialog"
                             aria-modal="true"
                             aria-labelledby="contact-privacy-title"
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <h3
                                 id="contact-privacy-title"
@@ -219,7 +293,7 @@ export default function ContactForm() {
                             </p>
                             <button
                                 type="button"
-                                onClick={() => setShowPrivacyModal(false)}
+                                onClick={closePrivacyModal}
                                 className="mt-6 inline-flex items-center justify-center rounded-lg border border-primary-400 bg-primary-600 px-4 py-2 text-sm font-semibold text-primary-50 transition-colors hover:cursor-pointer hover:bg-primary-500 dark:border-primary-300 dark:bg-primary-500 dark:hover:bg-primary-400"
                             >
                                 Entendido
@@ -234,8 +308,10 @@ export default function ContactForm() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        onClick={closeSuccessModal}
                     >
                         <motion.div
+                            ref={successContainerRef}
                             className="w-full max-w-md rounded-2xl border border-primary-200/35 bg-primary-100 p-6 text-center shadow-2xl dark:border-primary-200/20 dark:bg-primary-900"
                             initial={{ opacity: 0, y: 24, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -244,6 +320,7 @@ export default function ContactForm() {
                             role="dialog"
                             aria-modal="true"
                             aria-labelledby="contact-success-title"
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <h3
                                 id="contact-success-title"

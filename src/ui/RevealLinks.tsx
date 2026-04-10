@@ -16,7 +16,7 @@ function FlipLink({ children, href }: FlipLinkProps) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="relative block overflow-hidden whitespace-nowrap text-4xl font-black uppercase sm:text-3xl md:text-4xl lg:text-6xl xl:text-5xl leading-loose transition-colors duration-200"
+      className="relative block overflow-hidden whitespace-nowrap text-3xl font-black uppercase sm:text-3xl md:text-4xl lg:text-6xl xl:text-5xl leading-loose transition-colors duration-200 animate-pulse hover:text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2"
     >
       <div>
         {children.split("").map((letter, index) => (
@@ -34,7 +34,7 @@ function FlipLink({ children, href }: FlipLinkProps) {
               ease: "easeInOut",
               delay: STAGGER * index,
             }}
-            className="inline-block text-gray-900"
+            className="inline-block text-gray-900 dark:text-primary-100"
             key={`${children}-top-${index}`}
           >
             {letter}
@@ -73,9 +73,9 @@ export default function RevealLinks() {
   return (
     <section className="grid h-full min-h-75 place-content-center gap-2 px-8 py-10 text-gray-900 dark:text-primary-100 text-center xl:py-20">
       <FlipLink href="https://share.google/FgykKKxEn3jMGE370">Google</FlipLink>
-      <FlipLink href="https://www.linkedin.com">LinkedIn</FlipLink>
-      <FlipLink href="https://www.facebook.com">Facebook</FlipLink>
-      <FlipLink href="https://www.instagram.com">Instagram</FlipLink>
+      {/* <FlipLink href="https://www.linkedin.com">LinkedIn</FlipLink>
+      <FlipLink href="https://www.facebook.com">Facebook</FlipLink> */}
+      <FlipLink href="https://www.instagram.com/disorderundergroundshop/">Instagram</FlipLink>
     </section>
   );
 }

@@ -99,8 +99,12 @@ export default function Equipo() {
     if (loadingPage || loadingGalleries) return <LoadingSpinner />;
 
     return (
-        <div className="page-with-navbar px-6 py-10 space-y-12 mt-10">
-            <h1 className="text-4xl sm:text-5xl font-bold text-primary-100 dark:text-white text-center">
+        <div className="page-with-navbar px-6 py-10 space-y-12 mt-10 relative">
+            <div
+                className="fixed inset-0 z-0 bg-[url('/img/trazos-fondo-900x400.webp')] md:bg-[url('/img/trazos-fondo.webp')] bg-center bg-cover bg-no-repeat opacity-20 pointer-events-none brightness-50 dark:brightness-100"
+                aria-hidden="true"
+            />
+            <h1 className="text-4xl sm:text-5xl font-bold text-primary-900 dark:text-white text-center">
                 {page?.title ?? "Nuestro equipo"}
             </h1>
 
@@ -121,9 +125,9 @@ export default function Equipo() {
                 return (
                     <section
                         key={artist.name}
-                        className="max-w-5xl mx-auto rounded-xl border border-primary-300/30 dark:border-primary-200/20 bg-primary-900/35 p-6 sm:p-8"
+                        className="max-w-5xl mx-auto rounded-xl border border-primary-300/30 dark:border-primary-200/20 bg-primary-700/25 p-6 sm:p-8"
                     >
-                        <h2 className="text-3xl font-bold text-primary-100 dark:text-white">{artist.name}</h2>
+                        <h2 className="text-3xl font-bold text-primary-200 dark:text-white">{artist.name}</h2>
 
                         {artist.leadTitleHtml && (
                             <div
@@ -147,7 +151,7 @@ export default function Equipo() {
 
                         {artist.descriptionHtml && (
                             <div
-                                className="wp-content mt-6 text-primary-100 **:text-primary-100"
+                                className="wp-content mt-6 text-primary-100 dark:text-primary-100 **:text-primary-900 dark:**:text-primary-100"
                                 dangerouslySetInnerHTML={{ __html: artist.descriptionHtml }}
                             />
                         )}

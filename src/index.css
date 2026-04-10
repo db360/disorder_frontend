@@ -9,6 +9,9 @@
 }
 @import "tailwindcss";
 
+/* Usar la clase .dark para las variantes dark: de Tailwind v4 (en lugar de prefers-color-scheme) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Definir la fuente en formato WOFF */
 @font-face {
   font-family: 'Beatstreet';
@@ -126,14 +129,14 @@ body.page-snap {
 }
 
 .home-section {
-	min-height: 100vh;
+	min-height: 100svh;
 	height: auto;
 	scroll-snap-align: start;
 }
 
 @media (min-width: 1024px) {
 	.home-section {
-		height: 100vh;
+		height: 100dvh;
 	}
 }
 

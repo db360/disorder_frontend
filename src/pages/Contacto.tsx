@@ -10,14 +10,18 @@ export default function Contacto() {
     });
 
     return (
-        <div className="min-h-screen px-4 page-navbar-offset">
+        <div className="min-h-screen px-4 page-navbar-offset relative">
+            <div
+                className="fixed inset-0 z-0 bg-[url('/img/trazos-fondo-900x400.webp')] md:bg-[url('/img/trazos-fondo.webp')] bg-center bg-cover bg-no-repeat opacity-20 pointer-events-none brightness-50 dark:brightness-100"
+                aria-hidden="true"
+            />
             <ScrollText
                 text="Contacto"
                 textSize={160}
                 textY={37}
                 containerClassName="h-[35vh] md:h-[25vh]"
             />
-            <div className="bg-primary-600 text-center text-primary-100 mb-12 py-4">
+            <div className="bg-primary-800 dark:bg-primary-900 text-center text-primary-100 mb-12 py-4">
             <h2 className="text-3xl mb-5">Consulta cualquier duda, contactaremos contigo en el menor tiempo posible</h2>
             <h3 className="text-2xl ">Nos encontramos en: Plaza de la Libertad 3 Local 7B - San Pedro Alcántara</h3>
 

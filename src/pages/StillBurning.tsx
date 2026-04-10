@@ -68,7 +68,11 @@ export default function StillBurning() {
     if (loading) return <LoadingSpinner />;
 
     return (
-        <div className="page-with-navbar">
+        <div className="page-with-navbar relative">
+            <div
+                className="fixed inset-0 z-0 bg-[url('/img/trazos-fondo-900x400.webp')] md:bg-[url('/img/trazos-fondo.webp')] bg-center bg-cover bg-no-repeat opacity-20 pointer-events-none brightness-50 dark:brightness-100"
+                aria-hidden="true"
+            />
             <section className="page-full-minus-navbar">
                 <StillBurningAnimatedHero
                     title={page?.title ?? "Still Burning"}

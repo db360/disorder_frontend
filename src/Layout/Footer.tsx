@@ -49,18 +49,6 @@ export default function Footer() {
                     menuOrder: 92,
                   },
                   {
-                    id: "static-politica-privacidad-link",
-                    slug: "politica-de-privacidad",
-                    title: "Politica de privacidad",
-                    menuOrder: 93,
-                  },
-                  {
-                    id: "static-terminos-link",
-                    slug: "terminos-y-condiciones",
-                    title: "Terminos y condiciones",
-                    menuOrder: 94,
-                  },
-                  {
                     id: "static-accesibilidad-link",
                     slug: "declaracion-accesibilidad",
                     title: "Declaracion de accesibilidad",
@@ -104,21 +92,21 @@ export default function Footer() {
           </p>
           <div className="space-y-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">Email</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary-800 dark:text-primary-300 mb-0.5">Email</p>
               <p className="text-sm text-primary-900 dark:text-primary-100">{contactEmail}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">WhatsApp</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary-800 dark:text-primary-300 mb-0.5">WhatsApp</p>
               <p className="text-sm text-primary-900 dark:text-primary-100">{whatsappNumber}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">Dirección</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary-800 dark:text-primary-300 mb-0.5">Dirección</p>
               <p className="text-sm text-primary-900 dark:text-primary-100">
                 Plaza de la Libertad 3, Local 7B<br />San Pedro Alcántara
               </p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 dark:text-primary-400 mb-0.5">Horario</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary-800 dark:text-primary-300 mb-0.5">Horario</p>
               <p className="text-sm text-primary-900 dark:text-primary-100">
                 Lun – Vie: 10:00 – 14:00 / 17:00 – 20:00
               </p>
@@ -137,8 +125,8 @@ export default function Footer() {
             </span>
         </div>
       {/* Kit Digital section */}
-      <div className="mx-auto max-w-3/4 p-4">
-        <p className="text-xs sm:text-sm text-center mb-2 dark:text-white text-black px-4">
+      <div className="mx-auto max-w-full sm:max-w-3/4 p-4">
+        <p className="text-xs sm:text-sm text-center mb-2 dark:text-white text-black max-w-xs sm:max-w-none mx-auto">
           Financiado por la Unión Europea con el programa Kit Digital por los
           fondos Next Generation (EU) del mecanismo de recuperación y
           resiliencia
@@ -146,7 +134,7 @@ export default function Footer() {
         <img
           src="/img/Kit-Digital-Banner.webp"
           alt="Kit Digital - Financiado por la Unión Europea"
-          // className="w-full h-auto"
+          className="w-full h-auto"
           width={2048}
           height={154}
           loading="lazy"

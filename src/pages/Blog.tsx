@@ -70,8 +70,12 @@ export default function Blog() {
   }
 
   return (
-    <div className="px-6 py-32">
-      <div className="mx-auto max-w-6xl">
+    <div className="px-6 py-32 relative">
+      <div
+        className="fixed inset-0 z-0 bg-[url('/img/trazos-fondo-900x400.webp')] md:bg-[url('/img/trazos-fondo.webp')] bg-center bg-cover bg-no-repeat opacity-20 pointer-events-none brightness-50 dark:brightness-100"
+        aria-hidden="true"
+      />
+      <div className="mx-auto max-w-6xl relative z-10">
         <h1 className="mb-8 text-4xl font-bold text-primary-700 dark:text-primary-100 font-beatstreet">
           Blogs
         </h1>

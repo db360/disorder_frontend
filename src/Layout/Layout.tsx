@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
   <>
   <ScrollYProgress />
   <NavBar />
-  <main className="min-h-screen bg-primary-100 dark:bg-primary-500 transition-colors">
+  <main className="min-h-screen bg-primary-400 dark:bg-primary-500 transition-colors">
     {children}
   </main>
   <aside aria-label="Contacto rápido">

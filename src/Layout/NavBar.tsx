@@ -180,7 +180,7 @@ export default function NavBar() {
           </Link>
         </div>
         {/* Center: Links (60%) */}
-        <div className="basis-3/5 hidden lg:flex items-center justify-center text-2xl">
+        <div className="basis-3/5 hidden lg:flex items-center justify-center text-lg xl:text-2xl">
           {error && (
             <span className="text-red-600 dark:text-red-400 text-base">
               Error cargando menú
@@ -193,7 +193,7 @@ export default function NavBar() {
           )}
           {!error && !loading && (
             <motion.ul
-              className="flex gap-10 items-center"
+              className="flex gap-5 xl:gap-10 items-center"
               variants={listVariants}
               initial="hidden"
               animate="visible"

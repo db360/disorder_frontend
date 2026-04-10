@@ -73,16 +73,16 @@ export default function Historia() {
     <div className="page-with-navbar">
       <section className="page-full-minus-navbar relative flex items-center px-6">
         <div
-          className="absolute inset-0 z-0 bg-[url('/img/trazos-fondo.svg')] bg-center bg-cover bg-no-repeat opacity-30 pointer-events-none"
+          className="absolute inset-0 z-0 bg-[url('/img/trazos-fondo-900x400.webp')] md:bg-[url('/img/trazos-fondo.webp')] bg-center bg-cover bg-no-repeat opacity-30 pointer-events-none brightness-50 dark:brightness-100"
           aria-hidden="true"
         />
         <div className="relative z-10 max-w-6xl mx-auto w-full space-y-6">
           <ScrollVelocity
-            texts={[page?.title || "El Estudio", "Disorder Underground Shop"]}
+            texts={[page?.title || "Nuestro Estudio", "Disorder Underground Shop"]}
             velocity={100}
-            className="custom-scroll-text py-4"
+            className="custom-scroll-text py-4 text-primary-900 dark:text-primary-100"
           />
-          <h1 className="sr-only">{page?.title ?? "El Estudio"}</h1>
+          <h1 className="sr-only">{page?.title ?? "Nuestro Estudio"}</h1>
           <div className="space-y-6">
             {wpContent.paragraphs.length > 0 ? (
               wpContent.paragraphs.map((paragraph, index) => (
